@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dosya Yükleme ve Paylaşım</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        h1 {
+            color: #ff5252;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        #drop-area {
+            border: 2px dashed #ff5252;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            background-color: #2a2a2a;
+            position: relative;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        #drop-area p {
+            color: #9e9e9e;
+            margin: 0;
+        }
+
+        #fileElem {
+            display: none;
+        }
+
+        .button {
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 10px 0;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: #ff7979;
+            transform: scale(1.05);
+        }
+
+        #uploadBtn:disabled {
+            background-color: #616161;
+            cursor: not-allowed;
+        }
+
+        #title {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #424242;
+            border-radius: 5px;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            width: calc(100% - 22px);
+            box-sizing: border-box;
+        }
+
+        #error-message {
+            color: #ff5252;
+            margin-top: 10px;
+        }
+
+        #file-list {
+            margin-top: 20px;
+            max-height: 300px; /* Maksimum yükseklik */
+            overflow-y: auto; /* Dikey kaydırma çubuğu */
+            scrollbar-width: none; /* Firefox için scrollbar'ı gizle */
+        }
+
+        #file-list::-webkit-scrollbar {
+            display: none; /* Webkit tabanlı tarayıcılar için scrollbar'ı gizle */
+        }
+
+        .file-item {
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #1e1e1e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            word-break: break-word; /* Uzun kelimelerin taşmasını önle */
+        }
+
+        .file-item span {
+            display: block;
+            max-width: 150px; /* Maksimum genişlik */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+        }
+
+        .file-item span:hover::after {
+            content: attr(data-full-title);
+            position: absolute;
+            left: 0;
+            top: 100%;
+            white-space: normal;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            display: block;
+        }
+
+        .copy-button {
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .copy-button:hover {
+            background-color: #ff7979;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #333;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar span {
+            display: block;
+            height: 100%;
+            background-color: #ff5252;
+            width: 0;
+            border-radius: 5px;
+            transition: width 0.4s ease;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .button {
+                padding: 8px 16px;
+            }
+
+            #drop-area {
+                padding: 20px;
+            }
+
+            .file-item span {
+                max-width: 120px;
+            }
+        }
+
+        .notification {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background-color: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            width: calc(100% - 40px);
+            max-width: 400px;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .notification.show {
+            display: block;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notification.hide {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dosya Yükleme ve Paylaşım</h1>
+        <div id="drop-area">
+            <p>Sürükleyip bırakın veya dosya seçmek için tıklayın</p>
+            <input type="file" id="fileElem">
+            <button id="browseBtn" class="button">Dosya Seç</button>
+            <input type="text" id="title" placeholder="Dosya Başlığı" required>
+            <button id="uploadBtn" class="button" disabled>Yükle</button>
+            <p id="error-message"></p>
+            <div class="progress-bar" id="progress-bar">
+                <span id="progress"></span>
+            </div>
+            <p id="selected-file"></p>
+        </div>
+        <div id="file-list"></div>
+        <div class="notification" id="notification">İndirme başladı!</div>
+    </div>
+
+    <script>
+        const dropArea = document.getElementById('drop-area');
+        const fileElem = document.getElementById('fileElem');
+        const browseBtn = document.getElementById('browseBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileList = document.getElementById('file-list');
+        const titleInput = document.getElementById('title');
+        const errorMessage = document.getElementById('error-message');
+        const progressBar = document.getElementById('progress-bar');
+        const progress = document.getElementById('progress');
+        const selectedFile = document.getElementById('selected-file');
+        const notification = document.getElementById('notification');
+
+        let selectedFileData = null;
+
+        function handleFiles(files) {
+            const file = files[0];
+            selectedFileData = file;
+            selectedFile.textContent = `Seçilen dosya: ${file.name}`;
+            uploadBtn.disabled = false;
+        }
+
+        function handleUpload() {
+            const title = titleInput.value.trim();
+
+            if (!title) {
+                errorMessage.textContent = 'Başlık zorunludur!';
+                return;
+            }
+
+            if (!selectedFileData) {
+                errorMessage.textContent = 'Dosya seçilmedi!';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', selectedFileData);
+            formData.append('title', title);
+
+            uploadBtn.disabled = true;
+            progressBar.style.display = 'block';
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    const percentComplete = (e.loaded / e.total) * 100;
+                    progress.style.width = percentComplete + '%';
+                }
+            };
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    errorMessage.textContent = 'Yükleme başarılı!';
+                    displayFiles();
+                } else {
+                    errorMessage.textContent = 'Yükleme sırasında bir hata oluştu!';
+                }
+                uploadBtn.disabled = false;
+                progress.style.width = '0%';
+                selectedFile.textContent = '';
+                progressBar.style.display = 'none';
+                titleInput.value = '';
+                selectedFileData = null;
+            };
+
+            xhr.onerror = function() {
+                errorMessage.textContent = 'Yükleme sırasında bir hata oluştu!';
+                uploadBtn.disabled = false;
+                progress.style.width = '0%';
+                progressBar.style.display = 'none';
+            };
+
+            xhr.send(formData);
+        }
+
+        function displayFiles() {
+            fetch('/files')
+                .then(response => response.json())
+                .then(files => {
+                    fileList.innerHTML = '';
+                    files.forEach(file => {
+                        const fileItem = document.createElement('div');
+                        fileItem.classList.add('file-item');
+                        fileItem.innerHTML = `
+                            <span data-full-title="${file.title}">${file.title}</span>
+                            <div>
+                                <button class="copy-button" onclick="downloadFile('${file.fileName}')">İndir</button>
+                                <button class="copy-button" onclick="copyLink('${file.fileName}')">Bağlantıyı Kopyala</button>
+                            </div>
+                        `;
+                        fileList.appendChild(fileItem);
+                    });
+                });
+        }
+
+        function downloadFile(fileName) {
+            fetch(`/download/${fileName}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url); // Belleği temizle
+
+                    // Bildirimi göster
+                    notification.classList.add('show');
+
+                    setTimeout(() => {
+                        notification.classList.add('hide');
+                        setTimeout(() => {
+                            notification.classList.remove('show', 'hide');
+                        }, 500); // Geçiş süresi tamamlandığında 'show' ve 'hide' sınıflarını kaldır
+                    }, 3000); // Mesaj 3 saniye sonra kaybolur
+                })
+                .catch(error => {
+                    console.error('Dosya indirilirken bir hata oluştu:', error);
+                });
+        }
+
+
+        function copyLink(fileName) {
+            // URL'de güvenli olmayan karakterleri kodla
+            const encodedFileName = encodeURIComponent(fileName);
+            const downloadLink = `${window.location.origin}/downloadmenu/${encodedFileName}`;
+            
+            // Kopyalama işlemi için geçici bir input oluşturun
+            const tempInput = document.createElement('input');
+            tempInput.value = downloadLink;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            alert('İndirme bağlantısı kopyalandı!');
+        }
+
+
+
+
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#333';
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.backgroundColor = '#2a2a2a';
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#2a2a2a';
+            handleFiles(e.dataTransfer.files);
+        });
+
+        browseBtn.addEventListener('click', () => {
+            fileElem.click();
+        });
+
+        fileElem.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        uploadBtn.addEventListener('click', handleUpload);
+
+        window.onload = displayFiles;
+    </script>
+</body>
+</html>

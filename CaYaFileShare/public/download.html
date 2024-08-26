@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İndirme Ekranı</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+
+        .button {
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: #ff7979;
+            transform: scale(1.05);
+        }
+
+        .file-info {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .file-info img {
+            max-width: 150px; /* Küçük bir genişlik */
+            max-height: 150px; /* Küçük bir yükseklik */
+            border-radius: 10px;
+            object-fit: cover; /* Resmi kutunun içine sığdırır */
+            display: block;
+        }
+
+        .file-details {
+            margin-top: 10px;
+            color: #b0b0b0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            .button {
+                padding: 8px 16px;
+            }
+        }
+
+        /* Onay mesajı stil */
+        .notification {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background-color: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            width: calc(100% - 40px);
+            max-width: 400px;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .notification.show {
+            display: block;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notification.hide {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dosya İndirme</h1>
+        <div class="file-info">
+            <!-- Burada dosya resmi gösterilecek -->
+            <img src="" alt="Dosya Resmi" id="file-image" style="display: none;">
+        </div>
+        <div class="file-details" id="file-details"></div>
+        <button class="button" id="download-button">İndir</button>
+        <button class="button" id="cancel-button">İptal</button>
+        <div class="notification" id="notification">İndirme başlatıldı.</div>
+    </div>
+
+    <script>
+        // URL'den dosya bilgilerini al
+        const params = new URLSearchParams(window.location.search);
+        const fileName = params.get('fileName');
+
+        if (fileName) {
+            fetch(`/downloadfiledataget/${fileName}`)
+                .then(response => response.json())
+                .then(file => {
+                    document.getElementById('file-details').innerHTML = `
+                        <p>Başlık: ${file.title}</p>
+                        <p>Dosya Adı: ${file.fileName}</p>
+                        <p>Dosya Boyutu: ${file.fileSizeMB} MB</p>
+                        <p>Dosya Formatı: ${file.fileName.split('.').pop()}</p>
+                    `;
+                    
+                    // Eğer dosya bir resimse, resmi göster
+                    const imageElement = document.getElementById('file-image');
+                    if (file.fileName.match(/\.(jpg|jpeg|png|gif)$/i)) {
+                        imageElement.src = `/download/${file.fileName}`; // Sunucudaki doğru yol
+                        imageElement.style.display = 'block';
+                    }
+
+                    document.getElementById('download-button').addEventListener('click', () => {
+                        // Onay mesajını göster
+                        const notification = document.getElementById('notification');
+                        notification.classList.add('show');
+
+                        setTimeout(() => {
+                            notification.classList.add('hide');
+                            setTimeout(() => {
+                                notification.classList.remove('show', 'hide');
+                            }, 500); // Geçiş süresi tamamlandığında 'show' ve 'hide' sınıflarını kaldır
+                        }, 3000); // Mesaj 3 saniye sonra kaybolur
+
+                        // İndirme işlemini başlat
+                        downloadFile(file.fileName);
+                    });
+                })
+                .catch(error => {
+                    console.error('Dosya bilgileri alınırken bir hata oluştu:', error);
+                });
+
+            document.getElementById('cancel-button').addEventListener('click', () => {
+                window.location.href = '/'; // Ana sayfaya yönlendirin
+            });
+        }
+
+        function downloadFile(fileName) {
+            fetch(`/download/${fileName}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url); // Belleği temizle
+                })
+                .catch(error => {
+                    console.error('Dosya indirilirken bir hata oluştu:', error);
+                });
+        }
+    </script>
+</body>
+</html>
