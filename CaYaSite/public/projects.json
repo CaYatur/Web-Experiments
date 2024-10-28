@@ -1,0 +1,148 @@
+{
+    "projects": [
+        {
+            "id": "proje1",
+            "title": "Proje 1",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 1 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje1_kapak.jpg",
+            "downloadLink": "scr/proje1_indir.zip",
+            "images": [
+                "img/proje1_gorsel1.jpg",
+                "img/proje1_gorsel2.png"
+            ]
+        },
+        {
+            "id": "proje2",
+            "title": "Proje 2",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 2 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje2_kapak.png",
+            "downloadLink": "scr/proje2_indir.zip",
+            "images": [
+                "img/proje2_gorsel1.jpg",
+                "img/proje2_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje1",
+            "title": "Proje 1",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 1 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje1_kapak.jpg",
+            "downloadLink": "scr/proje1_indir.zip",
+            "images": [
+                "img/proje1_gorsel1.jpg",
+                "img/proje1_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje2",
+            "title": "Proje 2",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 2 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje2_kapak.png",
+            "downloadLink": "scr/proje2_indir.zip",
+            "images": [
+                "img/proje2_gorsel1.jpg",
+                "img/proje2_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje1",
+            "title": "Proje 1",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 1 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje1_kapak.jpg",
+            "downloadLink": "scr/proje1_indir.zip",
+            "images": [
+                "img/proje1_gorsel1.jpg",
+                "img/proje1_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje2",
+            "title": "Proje 2",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 2 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje2_kapak.png",
+            "downloadLink": "scr/proje2_indir.zip",
+            "images": [
+                "img/proje2_gorsel1.jpg",
+                "img/proje2_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje1",
+            "title": "Proje 1",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 1 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje1_kapak.jpg",
+            "downloadLink": "scr/proje1_indir.zip",
+            "images": [
+                "img/proje1_gorsel1.jpg",
+                "img/proje1_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje2",
+            "title": "Proje 2",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 2 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje2_kapak.png",
+            "downloadLink": "scr/proje2_indir.zip",
+            "images": [
+                "img/proje2_gorsel1.jpg",
+                "img/proje2_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje1",
+            "title": "Proje 1",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 1 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje1_kapak.jpg",
+            "downloadLink": "scr/proje1_indir.zip",
+            "images": [
+                "img/proje1_gorsel1.jpg",
+                "img/proje1_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje2",
+            "title": "Proje 2",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 2 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje2_kapak.png",
+            "downloadLink": "scr/proje2_indir.zip",
+            "images": [
+                "img/proje2_gorsel1.jpg",
+                "img/proje2_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje1",
+            "title": "Proje 1",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 1 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje1_kapak.jpg",
+            "downloadLink": "scr/proje1_indir.zip",
+            "images": [
+                "img/proje1_gorsel1.jpg",
+                "img/proje1_gorsel2.jpg"
+            ]
+        },
+        {
+            "id": "proje2",
+            "title": "Proje 2",
+            "shortDescription": "Kısa bir açıklama.",
+            "description": "Proje 2 hakkında detaylı bilgi buraya gelecek.",
+            "coverImage": "img/proje2_kapak.png",
+            "downloadLink": "scr/proje2_indir.zip",
+            "images": [
+                "img/proje2_gorsel1.jpg",
+                "img/proje2_gorsel2.jpg"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,415 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Ana arka plan rengi: koyu siyah */
+    color: #e0e0e0; /* Ana yazı rengi: açık gri */
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    max-width: 1200px;
+}
+
+header {
+    background: #1a1a1a; /* Koyu gri başlık arka planı */
+    color: #e0e0e0;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #ff5252; /* Canlı kırmızı ana başlık */
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.tab button {
+    background-color: #2a2a2a; /* Koyu gri buton arka planı */
+    color: #ff6d6d; /* Kırmızı yazı rengi */
+    border: none;
+    padding: 1rem 2rem;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.tab button:hover {
+    background-color: #ff6d6d; /* Hover durumda açık kırmızı */
+    color: #fff; /* Hover durumda beyaz yazı */
+    transform: translateY(-2px); /* Hover efekti */
+}
+
+.tab button.active {
+    background-color: #ff5252; /* Seçili buton rengi */
+    color: #fff; /* Seçili buton yazı rengi */
+}
+
+.section {
+    padding: 2rem 0;
+}
+
+#about p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#projects {
+    background-color: #1e1e1e; /* Koyu gri projeler arka planı */
+    border-top: 4px solid #ff5252; /* Canlı kırmızı üst kenar */
+    padding-top: 1rem;
+}
+
+#projects h2 {
+    text-align: center;
+    color: #ff6d6d; /* Orta ton kırmızı başlık */
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.project {
+    background: #2a2a2a; /* Koyu gri kart rengi */
+    border: 1px solid #444; /* Koyu gri kenarlık */
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Hafif gölge */
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.project:hover {
+    transform: translateY(-5px);
+    border-color: #ff6d6d; /* Hover durumda kırmızı kenar */
+}
+
+.project img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.project h3 {
+    color: #ff6d6d; /* Kırmızı başlık rengi */
+    margin-bottom: 0.5rem;
+}
+
+.project a {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #ff5252; /* Canlı kırmızı buton arka planı */
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.project a:hover {
+    background: #ff6d6d; /* Hover durumda açık kırmızı */
+}
+
+/* Modal Stil */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    overflow: auto;
+}
+
+.modal-content {
+    background: #1e1e1e;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* Dikey yerleştirme */
+    align-items: center; /* Ortalamak için */
+}
+
+.modal-images {
+    display: flex;
+    flex-wrap: wrap; /* Resimleri sarmalayıp yerleştir */
+    justify-content: center; /* Resimleri ortala */
+    margin-bottom: 20px; /* Resimlerin altına biraz boşluk ekle */
+}
+
+.modal-images img {
+    max-width: 45%; /* Resimlerin genişliği */
+    margin: 5px; /* Resimler arasında boşluk */
+    border-radius: 5px;
+}
+
+.close {
+    position: absolute; /* Kapatma butonunu sabitle */
+    top: 10px; /* Üstten 10 piksel mesafe */
+    right: 20px; /* Sağdan 20 piksel mesafe */
+    font-size: 30px; /* Font boyutu */
+    color: white; /* Renk */
+    cursor: pointer; /* İmleci göster */
+    z-index: 1001; /* Butonun modal içeriğinden önde olmasını sağla */
+}
+
+.close:hover {
+    color: #ff5252; /* Hover durumda kırmızı ton */
+}
+
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background: #1a1a1a;
+    color: #fff;
+    margin-top: 2rem;
+}
+
+
+
+#contact {
+    background-color: #1e1e1e; /* Koyu gri arka plan */
+    border-top: 4px solid #ff5252; /* Kırmızı üst kenar */
+    padding: 2rem;
+}
+
+#contact h2 {
+    text-align: center;
+    color: #ff6d6d; /* Kırmızı başlık rengi */
+}
+
+#contact form {
+    max-width: 600px;
+    margin: auto;
+}
+
+#contact label {
+    display: block;
+    margin-top: 1rem;
+}
+
+#contact input, #contact textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc; /* Gri kenarlık */
+    border-radius: 5px;
+}
+
+#contact button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #ff5252; /* Canlı kırmızı buton arka planı */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#contact button:hover {
+    background: #ff6d6d; /* Hover durumda açık kırmızı */
+}
+
+
+
+
+
+
+
+
+
+
+
+.container {
+    padding: 20px;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab button {
+    background-color: #2a2a2a; /* Sekme arka plan rengi */
+    color: #ffffff; /* Sekme yazı rengi */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.tab button:hover {
+    background-color: #b65556; /* Sekme üzerine geldiğinde ana renk */
+}
+
+.tabcontent {
+    display: none; /* Varsayılan olarak gizli */
+    background-color: #2a2a2a; /* İçerik arka plan rengi */
+    padding: 20px;
+    border-radius: 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #b65556; /* Giriş alanı kenar rengi */
+    border-radius: 5px;
+    background-color: #3a3a3a; /* Giriş alanı arka plan rengi */
+    color: #ffffff; /* Giriş alanı yazı rengi */
+}
+
+button[type="submit"] {
+    background-color: #b65556; /* Gönder butonu arka plan rengi */
+    color: #ffffff; /* Gönder butonu yazı rengi */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #9a4747; /* Gönder butonu üzerine geldiğinde rengi */
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #2a2a2a; /* Alt bilgi arka plan rengi */
+}
+
+
+
+
+
+
+/* Genel stil ayarları */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a; /* Koyu arka plan */
+    color: #ffffff; /* Açık yazı rengi */
+}
+
+/* Scroll çubuğu için stil ayarları */
+::-webkit-scrollbar {
+    width: 10px; /* Scroll çubuğu genişliği */
+}
+
+::-webkit-scrollbar-track {
+    background: #2a2a2a; /* Scroll çubuğu arka plan rengi */
+    border-radius: 10px; /* Köşe yuvarlama */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ff5252; /* Scroll çubuğu parmağı rengi */
+    border-radius: 10px; /* Köşe yuvarlama */
+}
+
+/* Scroll çubuğu parmağı üzerine gelindiğinde */
+::-webkit-scrollbar-thumb:hover {
+    background: #ff6666; /* Hover rengi */
+}
+
+/* Diğer tarayıcılar için */
+.scrollable {
+    scrollbar-color: #ff5252 #2a2a2a; /* Firefox için parmak ve arka plan rengi */
+    scrollbar-width: thin; /* İnce kaydırma çubuğu */
+}
+
+
+/* Modal indirme butonu stili */
+#modal-download {
+    display: inline-block; /* Düz bir blok olarak göster */
+    background-color: #ff3333; /* Arka plan rengi */
+    color: #ffffff; /* Yazı rengi */
+    border: none; /* Kenarlık yok */
+    border-radius: 5px; /* Köşe yuvarlama */
+    padding: 10px 20px; /* İç boşluk */
+    font-size: 16px; /* Yazı boyutu */
+    text-decoration: none; /* Alt çizgi yok */
+    cursor: pointer; /* İmleç şekli */
+    transition: background-color 0.3s, transform 0.2s; /* Geçiş animasyonu */
+    margin: 10px 0; /* Üst ve alt boşluk */
+}
+
+/* İndirme butonuna fare ile gelindiğinde */
+#modal-download:hover {
+    background-color: #ff6666; /* Hover arka plan rengi */
+    transform: scale(1.05); /* Hafif büyütme efekti */
+}
+
+
+
+#about {
+    background-color: #222; /* Koyu arka plan rengi */
+    color: #f0f0f0; /* Açık yazı rengi */
+    padding: 20px; /* İçerik boşluğu */
+    border-radius: 10px; /* Kenar yuvarlama */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Gölge efekti */
+    font-family: 'Arial', sans-serif; /* Yazı tipi */
+}
+
+h2 {
+    color: #ff4757; /* Başlık rengi */
+    font-size: 24px; /* Başlık boyutu */
+}
+
+h3 {
+    color: #1e90ff; /* Alt başlık rengi */
+    font-size: 20px; /* Alt başlık boyutu */
+    margin-top: 15px; /* Üst boşluk */
+}
+
+.language-list,
+.field-list {
+    list-style-type: square; /* Liste simgesi */
+    padding-left: 20px; /* Soldan boşluk */
+}
+
+.language-list li,
+.field-list li {
+    margin: 5px 0; /* Liste elemanları arası boşluk */
+}
+
+p {
+    line-height: 1.6; /* Satır yüksekliği */
+    margin-bottom: 15px; /* Alt boşluk */
+}
+
+
+
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Kişisel Web Sayfam</title>
+</head>
+<body>
+    <header>
+        <h1>Kişisel Web Sayfam</h1>
+    </header>
+
+    <div id="conPC" class="container">
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'about')">Hakkımda</button>
+            <button class="tablinks" onclick="openTab(event, 'projects')">Projelerim</button>
+            <button class="tablinks" onclick="openTab(event, 'contact')">İletişim</button>
+        </div>
+
+        <div id="about" class="tabcontent active">
+            <h2>Hakkımda</h2>
+            <p>Merhaba, ben <strong>Çağan Turgut</strong>. 15 yaşındayım ve yazılımla, bilgisayarla uğraşmayı çok seviyorum. Teknolojiye olan ilgim, sürekli yeni şeyler öğrenme arzusuyla birleşiyor. Özellikle kodlama dilleri arasında HTML, CSS, JavaScript, C#, Python ve C++ ile çalışmayı tercih ediyorum.</p>
+            
+            <h3>Kodlama Dilleri</h3>
+            <ul class="language-list">
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+                <li>C#</li>
+                <li>Python</li>
+                <li>C++</li>
+            </ul>
+            
+            <h3>Alanlarım</h3>
+            <ul class="field-list">
+                <li>Bilgisayar</li>
+                <li>Yazılım</li>
+                <li>Tasarım</li>
+            </ul>
+        
+            <h3>Kariyer Hedeflerim</h3>
+            <p>Gelecekte yazılım alanında kariyer yapmayı ve teknoloji dünyasında etkili bir birey olmayı hedefliyorum. Özellikle yazılım geliştirme ve web tasarımı konularına ilgi duyuyorum.</p>
+<!--         
+            <h3>Projelerim</h3>
+            <p>Birçok farklı proje gerçekleştirdim. Bu projelerden biri, çekirdek düzeyinde çalışan Kilit programı. Bu program, diğerlerine göre aşılamadı ve güvenlik alanında önemli bir yere sahip. Ayrıca, bilgisayarı etkileşime kapatmak yerine belirli siteleri, belirli uygulamaları ve hatta belirli sitelerin belirli alanlarını, Google Doodle oyunlarına kadar engelleyebilen bir sistem geliştirdim. Bu sistemi uzaktan bir admin panel üzerinden yönetme imkanım var.</p>
+            <p>Bunun yanı sıra, basit 3D ve 2D oyunlar, hatta basit bir FPS oyunu bile yaptım. Windows işletim sisteminin çalışma mantığı hakkında çok üst düzey bilgiye sahibim. Eğlenceli programlar geliştirdim ve gelişmiş bir sohbet sistemi oluşturdum. Bu sistemde giriş, profil fotoğrafı, yönetici yönetimi, mesajlaşma, dosya yükleme, ön izleme ve indirme gibi birçok gelişmiş özellik mevcut. Ayrıca, oylama sistemleri ve güvenlik sistemi de geliştirdim. Güvenlik sistemi, eğer doğrulanmamış bir uygulama açılırsa ve çok fazla işlem gerçekleşirse, belirli bir sınıflamaya göre uygulamayı engelleyebilme yeteneğine sahip.</p> -->
+        </div>
+        
+
+        <div id="projects" class="tabcontent">
+            <h2>Projelerim</h2>
+            <div class="project-list" id="project-list"></div>
+        </div>
+
+        <div id="contact" class="tabcontent" style="display: none;">
+            <h2>İletişim</h2>
+            <form id="contact-form" onsubmit="submitContactForm(event)">
+                <label for="email">*E-posta:</label>
+                <input type="email" id="email" required>
+        
+                <label for="title">*Başlık:</label>
+                <input type="text" id="title" required>
+        
+                <label for="subject">*Konu:</label>
+                <input type="text" id="subject" required>
+        
+                <label for="content">*İçerik:</label>
+                <textarea id="content" rows="5" required></textarea>
+        
+                <button type="submit">Gönder</button>
+            </form>
+        </div>
+        
+        
+        
+    </div>
+
+
+
+   
+
+    
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">Proje Başlığı</h2>
+            <div id="modal-images" class="modal-images"></div>
+            <p id="modal-description">Proje hakkında daha fazla bilgi burada yer alacak.</p>
+            <a id="modal-download" href="#" class="download-btn" target="_blank">İndir</a>
+        </div>
+    </div>
+
+    <footer>
+        <p></p>
+    </footer>
+    
+
+    <script src="script.js"></script>
+
+    <script>
+        function checkMobileView() {
+            if (window.innerWidth <= 768) { // Ekran genişliği 768 piksel veya daha az ise
+                // document.getElementById('conPHONE').style.display = 'block'; // Hakkımda kısmını göster
+                // document.getElementById('conPC').style.display = 'none'; // Projeler kısmını gizle
+
+                const container = document.getElementById("conPC");
+                container.classList.remove("container"); // Sadece class'ı kaldır
+
+            } else {
+                // document.getElementById('conPHONE').style.display = 'none'; // Hakkımda kısmını gizle
+                // document.getElementById('conPC').style.display = 'block'; // Projeler kısmını göster
+
+                const container = document.getElementById("conPC");
+                container.classList.add("container"); // Class'ı geri ekle
+            }
+        }
+
+
+
+        window.onload = checkMobileView; // Sayfa yüklendiğinde kontrol et
+        window.onresize = checkMobileView; // Ekran boyutu değiştiğinde kontrol et
+    </script>
+    
+</body>
+</html>
