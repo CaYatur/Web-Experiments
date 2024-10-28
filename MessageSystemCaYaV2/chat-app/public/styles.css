@@ -1,0 +1,557 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Daha koyu arka plan */
+    color: #e0e0e0; /* Açık yazı rengi */
+    display: flex; /* Esnek düzen */
+    justify-content: center; /* Yatay ortalama */
+    align-items: center; /* Dikey ortalama */
+    height: 100vh; /* Tam yükseklik */
+    overflow: hidden; /* Kaydırma çubuğunu gizle */
+}
+
+#auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%; /* Responsive genişlik */
+    max-width: 400px; /* Maksimum genişlik */
+}
+
+form {
+    background-color: #1f1f1f; /* Form arka plan rengi */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    width: 100%; /* Tam genişlik */
+    transition: background-color 0.3s; /* Geçiş efekti */
+}
+
+form:hover {
+    background-color: #282828; /* Hover etkisi */
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #d32f2f; /* Başlık rengi kırmızı */
+}
+
+input {
+    display: block;
+    margin: 10px 0;
+    padding: 12px;
+    width: calc(100% - 20px); /* Genişliği tam doldur */
+    border: none;
+    border-radius: 4px;
+    background-color: #333; /* Giriş alanı arka plan rengi */
+    color: #ffffff; /* Yazı rengi */
+}
+
+input::placeholder {
+    color: #aaa; /* Placeholder rengi */
+}
+
+button {
+    padding: 12px;
+    background-color: #d32f2f; /* Ana hat rengi kırmızı */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    width: 100%; /* Buton genişliği tam doldur */
+    margin-top: 10px; /* Buton üstü boşluk */
+    transition: background-color 0.3s; /* Geçiş efekti */
+}
+
+button:hover {
+    background-color: #b71c1c; /* Hover rengi */
+}
+
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 90%; /* Responsive genişlik */
+    max-width: 600px; /* Maksimum genişlik */
+    margin: 20px auto; /* Ortalamak için */
+    background-color: #1f1f1f; /* Sohbet alanı arka plan rengi */
+    border-radius: 8px; /* Kenar yuvarlama */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Gölgelendirme */
+}
+
+#messages {
+    border: none;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    background-color: transparent; /* Arka planı şeffaf yap */
+    color: #ffffff; /* Mesaj yazı rengi */
+    padding: 10px; /* İç boşluk */
+}
+
+.message {
+    margin-bottom: 10px; /* Mesajlar arası boşluk */
+    padding: 10px; /* İç boşluk */
+    border-radius: 5px; /* Mesaj kutusu kenar yuvarlama */
+    background-color: #2a2a2a; /* Mesaj kutusu arka plan rengi */
+    word-break: break-all; /* Kelimeleri zorla kır */
+    white-space: pre-wrap; /* Boşlukları ve satır sonlarını korur */
+}
+
+.username {
+    overflow-wrap: break-word; /* Kelimeleri kes ve satıra geçir */
+    word-break: normal; /* Kelime kırılmasını normal yap */
+    white-space: normal; /* Normal boşluk ayarları */
+}
+
+
+.message .username {
+    font-weight: bold; /* Kullanıcı adı kalın */
+    color: #d32f2f; /* Kullanıcı adı rengi */
+}
+
+.message .text {
+    margin-top: 5px; /* Mesaj metni ile üstteki alan arası boşluk */
+}
+
+#message-input {
+    width: calc(100% - 20px); /* Genişliği tam doldur */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333; /* Giriş alanı arka plan rengi */
+    color: #ffffff; /* Yazı rengi */
+}
+
+#file-input {
+    display: none; /* Varsayılan olarak gizli */
+}
+
+.file-label {
+    display: inline-block;
+    padding: 10px;
+    background-color: #d32f2f; /* Ana hat rengi kırmızı */
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px; /* Buton üstü boşluk */
+    text-align: center; /* Metni ortala */
+    transition: background-color 0.3s; /* Geçiş efekti */
+}
+
+.file-label:hover {
+    background-color: #b71c13; /* Hover rengi */
+}
+
+.modal {
+    display: none; /* Başlangıçta gizli */
+    position: fixed;
+    z-index: 1000; /* Üstte gösterim için */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Taşma durumunda kaydırma */
+    background-color: rgba(0, 0, 0, 0.8); /* Yarı saydam arka plan */
+    justify-content: center; /* Yatay ortalamak için */
+    align-items: center; /* Dikey ortalamak için */
+}
+
+.modal-content {
+    width: 100%; /* Tam genişlik */
+    height: auto; /* Yükseklik otomatik */
+    max-height: 90%; /* Maksimum yükseklik */
+    object-fit: contain; /* Resmi orantılı şekilde sığdırır */
+    display: block; /* Görünür hale getir */
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.profile-pic {
+    width: 40px; /* Profil fotoğrafı boyutu */
+    height: 40px; /* Profil fotoğrafı boyutu */
+    border-radius: 50%; /* Yuvarlak profil fotoğrafı */
+    margin-right: 8px; /* Mesaj metni ile arası */
+    vertical-align: middle; /* Dikey hizalama */
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#profilePicContainer {
+    margin-bottom: 10px;
+}
+
+#profilePic {
+    width: 50px; /* Küçültülmüş boyut */
+    height: 50px; /* Küçültülmüş boyut */
+    border-radius: 50%;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.message img {
+    margin-right: 10px;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 600px) {
+    body {
+        padding: 10px; /* Kenar boşlukları ekle */
+        overflow: auto; /* Kaydırma çubuğunu göster */
+    }
+
+    #auth-container {
+        padding: 10px;
+    }
+
+    form {
+        width: 100%; /* Tam genişlik */
+    }
+
+    #chat-container {
+        width: 100%; /* Sohbet alanı tam genişlik */
+    }
+
+    #messages {
+        height: 200px; /* Mesaj alanı yüksekliği */
+    }
+
+    .modal-content {
+        max-height: 80%; /* Modal içerik maksimum yüksekliği */
+    }
+
+    .profile-pic {
+        width: 35px; /* Küçültülmüş profil fotoğrafı boyutu */
+        height: 35px; /* Küçültülmüş profil fotoğrafı boyutu */
+    }
+
+    #profilePic {
+        width: 40px; /* Küçültülmüş profil fotoğrafı boyutu */
+        height: 40px; /* Küçültülmüş profil fotoğrafı boyutu */
+    }
+}
+
+
+#messages {
+    max-height: 300px;       /* Mesajların görünmesini istediğiniz maksimum yükseklik */
+    overflow-y: auto;        /* Yalnızca dikey kaydırma izin verir */
+}
+
+/* Webkit tabanlı tarayıcılar için scroll çubuğunu gizler */
+#messages::-webkit-scrollbar {
+    width: 0;                /* Genişliği sıfır yaparak gizler */
+    height: 0;               /* Yüksekliği sıfır yaparak gizler */
+}
+
+/* Diğer tarayıcılar için (örneğin, Firefox) scroll çubuğunu gizler */
+#messages {
+    scrollbar-width: none;    /* Firefox için scroll çubuğunu gizler */
+}
+
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+form {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+form:hover {
+    background-color: #282828;
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #d32f2f;
+}
+
+input {
+    display: block;
+    margin: 10px 0;
+    padding: 12px;
+    width: calc(100% - 20px);
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: #ffffff;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+button {
+    padding: 12px;
+    background-color: #d32f2f;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #b71c1c;
+}
+
+/* Diğer stiller burada kalabilir */
+
+
+
+/* Ana Stil */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Auth Container */
+#auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* Form Stilleri */
+form {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+form:hover {
+    background-color: #282828;
+}
+
+/* Başlık */
+h2 {
+    color: #d32f2f;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+input {
+    margin: 10px 0;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: #ffffff;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+/* Buton */
+button {
+    padding: 12px;
+    background-color: #d32f2f;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #b71c1c;
+}
+
+/* Chat Container */
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    margin-top: 20px;
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+#messages {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: transparent;
+    color: #ffffff;
+    max-height: 300px;
+    scrollbar-width: none; /* Firefox */
+}
+
+#messages::-webkit-scrollbar {
+    display: none; /* Webkit */
+}
+
+/* Mesaj */
+.message {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #2a2a2a;
+    border-radius: 5px;
+}
+
+.username {
+    font-weight: bold;
+    color: #d32f2f;
+}
+
+/* Özel kullanıcı adı için stil */
+.username.gold {
+    color: gold; /* Altın sarısı renk */
+}
+
+/* Profil Fotoğrafı */
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    #auth-container, #chat-container {
+        padding: 10px;
+        width: 100%;
+    }
+
+    #messages {
+        height: 200px;
+    }
+
+    .profile-pic {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+#file-input {
+    margin-left: 10px; /* Dosya seçme butonuna biraz boşluk ver */
+}
+
+progress {
+    width: 300px; /* İlerleme çubuğu genişliği */
+    height: 20px; /* İlerleme çubuğu yüksekliği */
+    -webkit-appearance: none; /* Webkit tarayıcılar için varsayılan görünüm kaldırılır */
+    appearance: none; /* Diğer tarayıcılar için varsayılan görünüm kaldırılır */
+}
+
+progress::-webkit-progress-bar {
+    background: #f3f3f3; /* Arka plan rengi */
+}
+
+progress::-webkit-progress-value {
+    background: red; /* İlerleme çubuğunun dolduğu kısımın rengi */
+}
+
+progress::-moz-progress-bar {
+    background: red; /* Firefox için ilerleme çubuğunun dolduğu kısımın rengi */
+}
+
+#upload-status {
+    margin-top: 10px; /* Yüklenme durumu için boşluk */
+}

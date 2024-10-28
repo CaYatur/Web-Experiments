@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesajlaşma Uygulaması</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Modal -->
+    <div id="image-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-image">
+    </div>
+
+    <div id="auth-container">
+        <h2>Mesajlaşma Uygulaması</h2>
+        <form id="login-form">
+            <h3>Giriş Yap</h3>
+            <input type="text" id="login-username" placeholder="Kullanıcı Adı" required autocomplete="off">
+            <input type="password" id="login-password" placeholder="Şifre" required>
+            <button type="submit">Giriş Yap</button>
+            <p>Hesabınız yok mu? <a href="#" id="show-register">Kayıt Ol</a></p>
+            <p><a href="#" id="show-reset">Şifremi Unuttum?</a></p>
+        </form>
+
+        <form id="register-form" style="display: none;">
+            <h3>Kayıt Ol</h3>
+            <input type="text" id="register-username" placeholder="Kullanıcı Adı" required autocomplete="off">
+            <input type="password" id="register-password" placeholder="Şifre" required autocomplete="off">
+            <input type="email" id="register-email" placeholder="E-posta" required autocomplete="off">
+            <button type="submit">Kayıt Ol</button>
+            <p>Hesabınız var mı? <a href="#" id="show-login">Giriş Yap</a></p>
+        </form>
+
+        <form id="reset-form" style="display: none;">
+            <h3>Şifre Sıfırlama</h3>
+            <input type="email" id="reset-email" placeholder="E-posta" required>
+            <button type="submit">Şifreyi Gönder</button>
+            <p><a href="#" id="show-login-from-reset">Geri Dön</a></p>
+        </form>
+    </div>
+
+    <div id="chat-container" style="display: none;">
+        <div id="messages">
+            <!-- Mesaj örneği -->
+        </div>
+        
+        <input type="text" id="message-input" placeholder="Mesajınızı yazın" autocomplete="off">
+        <button id="send-button">Gönder</button>
+        <label class="file-label" for="file-input">Dosya Seç</label>
+        <input type="file" id="file-input">
+
+        <input type="file" id="file-input" />
+        <progress id="upload-progress" value="0" max="100" style="display: none;"></progress>
+        <p id="upload-status" style="display: none;">Yükleniyor...</p>
+
+        <h2>Diğer Seçenekler</h2>
+        <button id="profile-pic-btn">Profil Fotoğrafı Yükle</button>
+        <button id="logout-button">Çıkış Yap</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Modal açma
+        var modal = document.getElementById("image-modal");
+        var modalImg = document.getElementById("modal-image");
+
+        document.getElementById("messages").addEventListener("click", function(e) {
+            if (e.target.tagName === "IMG") {
+                modal.style.display = "flex"; 
+                modalImg.src = e.target.src; 
+            }
+        });
+
+        // Modal kapatma
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+            modal.style.display = "none"; 
+        }
+
+        const profilePicInput = document.getElementById('file-input'); 
+        const profilePic = document.createElement('img'); 
+        const messageInput = document.getElementById('message-input');
+        const sendMessageButton = document.getElementById('send-button'); 
+        const messagesContainer = document.getElementById('messages');
+
+        const storedProfilePic = localStorage.getItem('profilePic');
+
+        if (storedProfilePic) {
+            profilePic.src = storedProfilePic;
+            profilePic.style.display = 'block'; 
+        }
+
+        profilePicInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePic.src = e.target.result;
+                    profilePic.style.display = 'block'; 
+
+                    localStorage.setItem('profilePic', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        sendMessageButton.addEventListener('click', function() {
+            const messageText = messageInput.value;
+            if (messageText) {
+                const message = document.createElement('div');
+                message.textContent = messageText;
+                messagesContainer.appendChild(message);
+                messageInput.value = ''; 
+            }
+        });
+    </script>
+</body>
+</html>
