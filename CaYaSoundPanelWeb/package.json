@@ -1,0 +1,15 @@
+{
+  "name": "caya-sound-panel",
+  "version": "0.1.0",
+  "description": "Minimal sound panel: client-side audio storage with cookie-gated access",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2"
+  }
+}

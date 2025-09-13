@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Video Player</title>
+  <style>
+    body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh}
+    video{max-width:100%;max-height:100%;outline:none}
+  </style>
+</head>
+<body>
+  <video id="v" controls autoplay></video>
+  <button id="fsBtn" title="Tam ekran (F11)" style="position:fixed;right:12px;top:12px;z-index:999;padding:8px 10px;border-radius:6px;border:none;background:rgba(255,255,255,0.08);color:#fff;">⤢</button>
+  <script src="video_player.js"></script>
+</body>
+</html>

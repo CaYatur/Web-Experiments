@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CaYa Gösterim Paneli</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+  <h1>CaYa Gösterim Paneli</h1>
+    <div id="notice" class="notice"></div>
+
+    <section class="upload">
+      <label id="uploadLabel" class="button" for="fileInput">İçerik Ekle</label>
+      <input id="fileInput" type="file" accept="audio/*,video/*" style="display:none">
+    </section>
+
+    <!-- queue removed as requested -->
+
+    <section class="library">
+      <h2>İçerikler</h2>
+      <ul id="libraryList"></ul>
+    </section>
+
+    <!-- Custom pill player -->
+    <div class="player-pill">
+      <button id="playBtn" class="play-btn" aria-label="Play">▶</button>
+      <!-- Global stop (for exclusive) and loop toggle -->
+      <button id="globalStopBtn" class="play-btn" title="Durdur">■</button>
+      <button id="loopToggle" class="play-btn" title="Tekrar (loop)">🔁</button>
+      <div class="player-info">
+        <div class="time"><span id="curTime">0:00</span> / <span id="totalTime">0:00</span></div>
+        <div id="progressBar" class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+      </div>
+      <div class="player-actions">
+        <button id="volIcon" class="vol-btn" title="Ses">🔊</button>
+        <input id="masterVol" class="vol-slider" type="range" min="0" max="100" value="100" aria-label="Master volume">
+        <button class="more-btn" title="Daha fazla">⋮</button>
+      </div>
+    </div>
+    <audio id="player" style="display:none;"></audio>
+  </div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
