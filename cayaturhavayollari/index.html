@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0b84ff">
+    <title>CaYatur Havayolları — GrandRP</title>
+    <!-- Modern fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <img src="Ekran görüntüsü 2025-09-21 134138.png" alt="logo" class="logo"/>
+        <span>CaYatur Havayolları</span>
+      </div>
+      <nav class="main-nav" aria-label="Ana Navigasyon">
+        <a href="#home">Anasayfa</a>
+        <a href="#map">Harita</a>
+        <a href="#flights">Uçuşlar</a>
+        <a href="#reservations">Rezervasyonlar</a>
+        <a href="#contact">İletişim</a>
+      </nav>
+      <button class="mobile-toggle" aria-label="Menu">☰</button>
+    </header>
+
+    <main>
+      <section id="home" class="hero">
+        <div class="hero-inner">
+            <h1><span class="accent">CaYatur</span> Havayolları</h1>
+            <p class="lead">GrandRP için tasarlanmış, hızlı ve güvenilir charter uçuşları. Haritadan kalkış ve varış seçin, rezervasyonunuzu yapın — her yere inebiliyoruz.</p>
+            <div class="hero-ctas">
+              <a class="btn" href="#map">Haritaya Git</a>
+              <a class="btn ghost" href="#reservations">Rezervasyonlarım</a>
+            </div>
+            <div class="features-grid">
+              <div class="feature">
+                <strong>Geniş Ağırlık</strong>
+                <p>Sunucu genelindeki tüm pistlere iniş yapabiliriz.</p>
+              </div>
+              <div class="feature">
+                <strong>Kolay Rezervasyon</strong>
+                <p>Hızlı modal ile birkaç saniyede rezervasyon yapın.</p>
+              </div>
+              <div class="feature">
+                <strong>Görsel Harita</strong>
+                <p>İnteraktif SVG harita ile noktaları seçin ve rotayı görün.</p>
+              </div>
+            </div>
+          </div>
+        <figure class="hero-image">
+          <img src="Ekran görüntüsü 2025-09-21 134721.png" alt="CaYatur showcase"/>
+          <img src="Ekran görüntüsü 2025-09-21 142250.png" alt="Yeni görsel" style="margin-top:12px;width:100%;height:140px;object-fit:cover;border-radius:8px;"/>
+          <img src="Ekran görüntüsü 2025-09-21 142431.png" alt="Yeni görsel 2" style="margin-top:8px;width:100%;height:100px;object-fit:cover;border-radius:8px;"/>
+        </figure>
+      </section>
+
+      <section id="about" class="about">
+        <div class="container">
+          <h2>Hakkımızda</h2>
+          <p>CaYatur Havayolları GrandRP topluluğu için kurulmuş, RP deneyimini zenginleştirmek amacıyla özelleştirilmiş bir sanal havayolu servisidir. Amacımız oyunculara güvenli, eğlenceli ve görsel açıdan tatmin edici uçuş deneyimi sunmaktır.</p>
+          <div class="why-grid">
+            <div class="why-card"><h4>Her yere iniş</h4><p>Sunucu kurallarına uygun, dikkatli iniş prosedürleri ile haritadaki pek çok noktaya iniş yapabiliyoruz.</p></div>
+            <div class="why-card"><h4>Gerçekçi rota</h4><p>Oluşturduğumuz rotalar görsel ve işlevsel olarak RP deneyimini destekler.</p></div>
+            <div class="why-card"><h4>Kolay rezervasyon</h4><p>Basit form ile birkaç saniyede rezervasyon oluşturun; kayıtlar tarayıcıda saklanır.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="how">
+        <div class="container">
+          <h2>Nasıl Çalışır?</h2>
+          <ol>
+            <li>Harita üzerindeki noktalardan kalkış ve varış seçin.</li>
+            <li>Rezervasyon formunu doldurun ve onaylayın.</li>
+            <li>Rezervasyonlarınız listelenecek; isterseniz dışa aktarabilirsiniz.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="why" class="why">
+        <div class="container">
+          <h2>Neden CaYatur?</h2>
+          <p>RP'nin atmosferini bozmadan, oyunculara hızlı ve göze hoş gelen uçuş seçenekleri sağlıyoruz. Uzun vadede topluluk etkinlikleri, charter uçuşlar ve VIP hizmetler planlıyoruz.</p>
+        </div>
+      </section>
+
+      <section id="faq" class="faq">
+        <div class="container">
+          <h2>Sıkça Sorulan Sorular</h2>
+          <details><summary>Rezervasyon iptal edilebilir mi?</summary><p>Evet, rezervasyonlar `Rezervasyonlarım` bölümünden iptal edilebilir.</p></details>
+          <details><summary>Veriler nerede saklanıyor?</summary><p>Şu an rezervasyonlar tarayıcı `localStorage`'ında saklanmaktadır. Sunucu tarafı isterseniz ekleyebilirim.</p></details>
+          <details><summary>Harita gerçek mi?</summary><p>Harita şu an stilize edilmiş bir SVG. Gerçek bir arka plan görseli eklemeyi tercih ederseniz koordinatları ona göre ayarlayabilirim.</p></details>
+        </div>
+      </section>
+
+      <section id="map" class="map-section">
+        <div class="section-header">
+          <h2>GTA5 Haritası</h2>
+          <p>Harita üzerindeki noktaları seçerek nereden nereye gitmek istediğinizi belirleyin.</p>
+        </div>
+        <div class="map-controls">
+            <div class="select-mode">
+              <button id="mode-origin" class="btn mode active">Kalkış (Origin)</button>
+              <button id="mode-dest" class="btn mode">Varış (Destination)</button>
+            </div>
+            <div class="map-actions">
+              <input id="map-search" placeholder="Yer ara (ör. Los Santos)" />
+              <button id="clear-markers" class="btn ghost">Temizle</button>
+              <button id="reserve-now" class="btn">Rezervasyon Yap</button>
+              <button id="export-bookings" class="btn ghost">Dışa Aktar</button>
+              <button id="import-bookings" class="btn ghost">İçe Aktar</button>
+            </div>
+        </div>
+
+        <!-- Simplified stylized SVG map with clickable markers -->
+        <div class="map-wrap">
+          <svg id="gta-map" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" aria-label="GTA5 Haritası">
+            <rect width="100%" height="100%" fill="#e9f2ff" rx="14"/>
+            <!-- example landmarks (positions are arbitrary x/y % of viewbox) -->
+            <g id="markers">
+              <g class="marker" data-id="lsa" data-name="Los Santos Intl" transform="translate(760,420)">
+                <circle r="12" fill="#0b84ff" stroke="#fff" stroke-width="3" />
+                <text x="18" y="6" font-size="16" fill="#07314a">Los Santos</text>
+              </g>
+              <g class="marker" data-id="sandy" data-name="Sandy Shores" transform="translate(820,240)">
+                <circle r="10" fill="#ff7a59" stroke="#fff" stroke-width="3" />
+                <text x="18" y="6" font-size="16" fill="#5a2b1f">Sandy</text>
+              </g>
+              <g class="marker" data-id="paleto" data-name="Paleto Bay" transform="translate(180,80)">
+                <circle r="11" fill="#34c759" stroke="#fff" stroke-width="3" />
+                <text x="18" y="6" font-size="16" fill="#12351a">Paleto</text>
+              </g>
+              <g class="marker" data-id="grape" data-name="Grapeseed" transform="translate(620,150)">
+                <circle r="9" fill="#8e44ad" stroke="#fff" stroke-width="3" />
+                <text x="18" y="6" font-size="16" fill="#3b1640">Grapeseed</text>
+              </g>
+              <g class="marker" data-id="zancudo" data-name="Fort Zancudo" transform="translate(120,420)">
+                <circle r="10" fill="#f5c542" stroke="#fff" stroke-width="3" />
+                <text x="18" y="6" font-size="16" fill="#6b4b05">Zancudo</text>
+              </g>
+            </g>
+            <!-- route line placeholder -->
+            <line id="route-line" x1="0" y1="0" x2="0" y2="0" stroke="#0b84ff" stroke-width="4" stroke-linecap="round" opacity="0" />
+          </svg>
+        </div>
+
+        <div class="map-legend">
+          <strong>Seçimler:</strong>
+          <span id="selected-origin">Kalkış: yok</span>
+          <span id="selected-dest">Varış: yok</span>
+          <span id="map-tooltip" class="map-tooltip" aria-hidden="true"></span>
+        </div>
+      </section>
+
+      <section id="flights" class="flights">
+        <h2>Hazır Rotalar</h2>
+        <p class="muted">Popüler rotalarımızdan birini seçin veya haritadan kendi rotanızı oluşturun.</p>
+        <div class="flight-grid">
+          <div class="card">
+            <h3>Los Santos ↔ Sandy Shores</h3>
+            <p>Turistik ve hızlı inişler.</p>
+            <button class="btn small" data-route-from="lsa" data-route-to="sandy">Hızlı Rezervasyon</button>
+          </div>
+          <div class="card">
+            <h3>Paleto Bay ↔ Fort Zancudo</h3>
+            <p>Askeri bölgeler yakınında iniş planı.</p>
+            <button class="btn small" data-route-from="paleto" data-route-to="zancudo">Hızlı Rezervasyon</button>
+          </div>
+          <div class="card">
+            <h3>Grapeseed ↔ Los Santos</h3>
+            <p>Kırsaldan şehir merkezine iniş.</p>
+            <button class="btn small" data-route-from="grape" data-route-to="lsa">Hızlı Rezervasyon</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="reservations" class="reservations">
+        <div class="section-header"><h2>Rezervasyonlarım</h2><p>Yerel olarak saklanan rezervasyonlarınız burada listelenir. Dışa aktarabilir ve yedekleyebilirsiniz.</p></div>
+        <div id="bookings-list" class="bookings-list">Henüz kayıtlı rezervasyon yok.</div>
+      </section>
+
+      <section id="gallery" class="gallery">
+        <h2>Galeri</h2>
+        <div class="carousel">
+          <button class="carousel-btn prev">‹</button>
+          <div class="carousel-track">
+            <img src="Ekran görüntüsü 2025-09-21 134138.png" alt="screen1">
+            <img src="Ekran görüntüsü 2025-09-21 134721.png" alt="screen2">
+            <img src="Ekran görüntüsü 2025-09-21 142250.png" alt="screen3">
+            <img src="Ekran görüntüsü 2025-09-21 142431.png" alt="screen4">
+          </div>
+          <button class="carousel-btn next">›</button>
+        </div>
+      </section>
+
+      <section id="contact" class="contact">
+        <h2>İletişim</h2>
+        <p>Sunucu içi: /whisper CaYatur | Discord: CaYatur#0001</p>
+        <div class="contact-grid">
+          <div>
+            <strong>Sunucu</strong>
+            <p>GrandRP — CaYatur Havayolları</p>
+          </div>
+          <div>
+            <strong>Destek</strong>
+            <p>Discord: CaYatur#0001</p>
+          </div>
+          <div>
+            <strong>İşbirliği</strong>
+            <p>Özel etkinlik ve charter talepleri için bize yazın.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq">
+        <h2>SSS</h2>
+        <div class="faq-list">
+          <details>
+            <summary>Nasıl rezervasyon yaparım?</summary>
+            <p>Haritadan kalkış ve varış seçin, "Rezervasyon Yap" düğmesine basın ve formu doldurun.</p>
+          </details>
+          <details>
+            <summary>Rezervasyonlar nerede saklanır?</summary>
+            <p>Şu anda tarayıcı `localStorage`'ında saklanır. Dışa aktarabilirsiniz.</p>
+          </details>
+          <details>
+            <summary>Her yere inebiliyor musunuz?</summary>
+            <p>Haritadaki tüm belirlenmiş pist ve noktalar için iniş yapabiliyoruz; zorlu inişler RP gerektirir.</p>
+          </details>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>© CaYatur Havayolları — GrandRP</p>
+    </footer>
+
+  <!-- Reservation Modal -->
+    <div id="reserve-modal" class="modal" aria-hidden="true">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-label="Rezervasyon Formu">
+        <button class="modal-close" aria-label="Kapat">✕</button>
+        <h3>Rezervasyon Yap</h3>
+        <form id="reserve-form">
+          <label>Adınız <input type="text" name="name" required /></label>
+          <label>Telefon (opsiyonel) <input type="text" name="phone" /></label>
+          <label>Kalkış <input type="text" name="from" readonly required /></label>
+          <label>Varış <input type="text" name="to" readonly required /></label>
+          <label>Tarih & Saat <input type="datetime-local" name="when" required /></label>
+          <div class="modal-actions">
+            <button type="submit" class="btn">Onayla</button>
+            <button type="button" class="btn ghost modal-cancel">İptal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lightbox for gallery -->
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+      <button class="lightbox-close" aria-label="Kapat">✕</button>
+      <img src="" alt="" />
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

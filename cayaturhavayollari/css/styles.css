@@ -1,0 +1,82 @@
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter, system-ui, Arial, sans-serif}
+:root{--accent:#0b84ff;--accent-2:#0066cc;--dark:#061226;--muted:#6b7280;--glass:rgba(255,255,255,0.75);--radius:12px}
+body{background:linear-gradient(180deg,#eef6ff,#f7fbff);color:var(--dark);min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:8px 18px}
+.site-header{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--glass);backdrop-filter:blur(6px);position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(11,132,255,0.08)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;color:var(--accent);font-size:1.15rem}
+.brand .logo{width:44px;height:44px;border-radius:8px;object-fit:cover;box-shadow:0 6px 18px rgba(11,132,255,0.12)}
+.main-nav a{margin-left:18px;color:var(--dark);text-decoration:none;padding:8px;border-radius:8px}
+.main-nav a:hover{background:rgba(11,132,255,0.06)}
+.mobile-toggle{display:none;background:transparent;border:0;font-size:1.4rem}
+.hero{display:grid;grid-template-columns:1fr 480px;gap:32px;padding:56px 48px;align-items:center}
+.hero-inner h1{font-size:2.6rem;margin-bottom:10px;font-family:Poppins, Inter, sans-serif}
+.hero .lead{color:var(--muted);margin-bottom:18px;font-size:1.05rem;line-height:1.5}
+.hero-ctas{display:flex;gap:12px;margin-bottom:14px}
+.btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;display:inline-block;box-shadow:0 8px 18px rgba(11,132,255,0.12);border:0}
+.btn.ghost{background:transparent;border:1px solid rgba(11,132,255,0.12);color:var(--accent)}
+.features{list-style:none;display:flex;gap:14px;margin-top:8px;color:var(--muted)}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.feature{background:#fff;padding:14px;border-radius:var(--radius);box-shadow:0 12px 36px rgba(6,24,60,0.06);min-width:140px}
+.feature strong{display:block;margin-bottom:6px}
+.hero-image img{width:100%;height:260px;object-fit:cover;border-radius:14px;box-shadow:0 14px 40px rgba(11,132,255,0.08)}
+.about, .how, .why, .faq{padding:32px 16px}
+.about .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:16px}
+.why-card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 8px 24px rgba(10,16,30,0.04);transition:transform .18s ease, box-shadow .18s ease}
+.why-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(10,16,30,0.08)}
+.how ol{padding-left:18px}
+details{background:#fff;padding:12px;border-radius:10px;margin-top:8px;box-shadow:0 8px 18px rgba(10,16,30,0.04)}
+details summary{cursor:pointer;font-weight:600}
+.map-section{padding:28px;background:linear-gradient(180deg,#fff,#f7fbff);border-top:1px solid rgba(11,132,255,0.03)}
+.section-header h2{margin-bottom:6px}
+.map-controls{display:flex;justify-content:space-between;align-items:center;margin:12px 0}
+.select-mode .btn.mode{margin-right:8px}
+.btn.mode.active{background:var(--accent-2)}
+.map-actions input#map-search{padding:8px 10px;border-radius:8px;border:1px solid rgba(6,18,40,0.06);min-width:180px}
+.map-actions button{margin-left:8px}
+.map-wrap{background:linear-gradient(180deg,#f2fbff,#ffffff);padding:12px;border-radius:12px;box-shadow:0 8px 24px rgba(5,20,40,0.05)}
+#gta-map{width:100%;height:420px;display:block}
+.marker{cursor:pointer}
+.marker circle{transition:transform .18s ease, r .12s}
+.marker:hover circle{transform:translateY(-3px);r:14}
+#route-line{transition:opacity .25s ease, x1 .2s ease, x2 .2s ease}
+.map-tooltip{margin-left:12px;background:rgba(6,18,40,0.96);color:#fff;padding:6px 8px;border-radius:8px;font-size:0.9rem}
+
+/* small route animation using stroke-dasharray */
+#route-line{stroke-dasharray:1000;stroke-dashoffset:1000;transition:stroke-dashoffset 0.9s ease, opacity .2s ease}
+#route-line.show{opacity:1;stroke-dashoffset:0}
+.map-legend{margin-top:10px;color:var(--muted);display:flex;gap:18px}
+.flights{padding:28px}
+.flight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:18px}
+.card{background:#fff;padding:18px;border-radius:14px;box-shadow:0 10px 30px rgba(10,18,40,0.06);transition:transform .18s ease, box-shadow .18s ease}
+.card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(6,18,40,0.12)}
+.card h3{margin-bottom:8px}
+.btn.small{padding:8px 10px;font-size:0.95rem}
+.reservations{padding:28px}
+.bookings-list{background:#fff;padding:14px;border-radius:10px;min-height:64px}
+.gallery{padding:28px}
+.carousel{position:relative;display:flex;align-items:center}
+.carousel-track{display:flex;overflow:hidden;width:100%;gap:12px}
+.carousel-track img{width:100%;max-height:360px;object-fit:cover;border-radius:12px;cursor:pointer}
+.carousel-track img:focus{outline:3px solid rgba(11,132,255,0.15)}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,12,20,0.85);z-index:120}
+.lightbox img{max-width:92%;max-height:86%;border-radius:10px}
+.lightbox.show{display:flex}
+.lightbox-close{position:absolute;right:28px;top:18px;background:transparent;border:0;color:#fff;font-size:20px;padding:10px;cursor:pointer}
+.carousel-btn{background:var(--accent-2);color:#fff;border:0;padding:10px 14px;border-radius:10px;margin:0 8px}
+.contact{padding:28px;background:linear-gradient(180deg,#fff,#f6fbff)}
+.site-footer{padding:18px;text-align:center;color:var(--muted)}
+
+/* modal */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(7,12,20,0.45);z-index:60}
+.modal[aria-hidden="false"]{display:flex}
+.modal-content{background:#fff;padding:20px;border-radius:12px;min-width:320px;max-width:520px;box-shadow:0 30px 80px rgba(5,12,30,0.35)}
+.modal-close{position:absolute;right:18px;top:14px;background:transparent;border:0;font-size:18px}
+.modal-content form{display:flex;flex-direction:column;gap:10px}
+.modal-content label{display:flex;flex-direction:column;font-size:0.95rem;color:var(--dark)}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+
+@media(max-width:980px){.hero{grid-template-columns:1fr;padding:28px}.hero-image img{width:100%;height:220px}.mobile-toggle{display:block}.main-nav{display:none}.map-wrap svg{height:320px}}
+
+@media(max-width:520px){.features{display:none}.carousel-track img{max-height:220px}}
