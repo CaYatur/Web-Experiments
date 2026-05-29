@@ -1,0 +1,12 @@
+{
+  "name": "acik-dunya-surus-multiplayer",
+  "version": "1.0.0",
+  "description": "Araba surme oyunu icin WebSocket relay sunucusu",
+  "type": "module",
+  "scripts": {
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

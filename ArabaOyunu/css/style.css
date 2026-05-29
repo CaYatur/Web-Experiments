@@ -1,0 +1,91 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Segoe UI', system-ui, sans-serif; }
+#app { position: fixed; inset: 0; }
+canvas { display: block; }
+
+/* ---------- BAŞLANGIÇ EKRANI ---------- */
+#start {
+  position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 30%, #1a2740, #070b12 70%);
+}
+.start-card {
+  width: min(460px, 92vw); background: rgba(16,22,34,.92); border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px; padding: 26px 28px; color: #e8eef7; box-shadow: 0 30px 80px rgba(0,0,0,.6);
+}
+.start-card h1 { font-size: 28px; letter-spacing: -.5px; }
+.start-card .sub { color: #8fa3bd; font-size: 13px; margin: 4px 0 18px; }
+.start-card label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #7f93ad; margin: 14px 0 6px; }
+.start-card input {
+  width: 100%; background: #0c1018; border: 1px solid #2a3346; color: #fff; border-radius: 10px;
+  padding: 11px 12px; font-size: 15px; outline: none;
+}
+.start-card input:focus { border-color: #2a6cff; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; }
+.row.btns { margin-top: 20px; }
+#model-list button {
+  flex: 1 1 0; min-width: 90px; cursor: pointer; background: #141b29; border: 2px solid #2a3346; color: #cdd7e4;
+  border-radius: 10px; padding: 10px 6px; font-size: 13px; font-weight: 600; transition: .15s;
+}
+#model-list button.sel { border-color: #2a6cff; background: #1b2740; color: #fff; }
+.swatch { width: 34px; height: 34px; border-radius: 9px; cursor: pointer; border: 3px solid transparent; transition: .12s; }
+.swatch.sel { border-color: #fff; transform: scale(1.08); }
+.hintline { font-size: 11.5px; color: #6f8198; margin-top: 6px; line-height: 1.5; }
+.start-card .btns button {
+  flex: 1; cursor: pointer; border: none; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 700;
+  background: #232c3e; color: #cdd7e4; transition: .15s;
+}
+.start-card .btns button:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.start-card .btns button.primary { background: linear-gradient(135deg, #2a6cff, #1e3fb8); color: #fff; }
+#start-status { font-size: 12.5px; color: #ffb020; margin-top: 12px; min-height: 16px; }
+
+/* ---------- HUD ---------- */
+#hud { position: fixed; inset: 0; pointer-events: none; color: #fff; }
+#banner {
+  position: absolute; top: 70px; left: 50%; transform: translateX(-50%);
+  font-size: 22px; font-weight: 800; padding: 10px 22px; border-radius: 12px;
+  background: rgba(180,20,20,.85); opacity: 0; transition: opacity .3s; text-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+#minimap {
+  position: absolute; right: 16px; top: 16px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18); box-shadow: 0 6px 20px rgba(0,0,0,.5);
+}
+#fps-box { position: absolute; left: 16px; top: 14px; font-size: 13px; color: #9effa0; background: rgba(0,0,0,.35); padding: 4px 10px; border-radius: 8px; }
+
+#speedo { position: absolute; right: 28px; bottom: 24px; text-align: right; text-shadow: 0 2px 10px rgba(0,0,0,.85); }
+#speedo .big { font-size: 66px; font-weight: 800; line-height: 1; letter-spacing: -2px; }
+#speedo .big small { font-size: 18px; font-weight: 500; margin-left: 6px; opacity: .8; }
+#speedo .gear { font-size: 20px; opacity: .9; margin-top: 4px; }
+#speedo .gear span { font-weight: 800; color: #ffd24a; }
+
+#bars { position: absolute; right: 28px; bottom: 150px; width: 200px; }
+.bar { margin-bottom: 8px; }
+.bar .lbl { font-size: 11px; letter-spacing: 1px; opacity: .85; text-shadow: 0 1px 4px #000; }
+.bar .track { height: 12px; background: rgba(0,0,0,.45); border-radius: 7px; overflow: hidden; border: 1px solid rgba(255,255,255,.15); }
+.fill { height: 100%; width: 100%; border-radius: 7px; transition: width .12s linear; }
+.fill.boost { background: linear-gradient(90deg, #2a6cff, #66e0ff); }
+.fill.health { background: #39d98a; }
+
+#panel {
+  position: fixed; left: 16px; bottom: 16px; max-width: 380px; pointer-events: auto;
+  background: rgba(12,16,24,.62); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px 16px; color: #e8eef7;
+}
+#connect-ds {
+  cursor: pointer; border: none; border-radius: 10px; padding: 10px 16px; font-size: 15px; font-weight: 700;
+  background: linear-gradient(135deg, #2a6cff, #1e3fb8); color: #fff; box-shadow: 0 6px 18px rgba(30,80,200,.4); transition: .2s;
+}
+#connect-ds:hover { transform: translateY(-1px); filter: brightness(1.1); }
+#connect-ds:disabled { opacity: .5; cursor: not-allowed; }
+#connect-ds.ok { background: linear-gradient(135deg, #19c37d, #0f8a59); }
+#ds-status { font-size: 12.5px; margin: 8px 0; color: #b9c6d8; min-height: 16px; }
+#hint { font-size: 12px; line-height: 1.7; color: #cdd7e4; border-top: 1px solid rgba(255,255,255,.1); padding-top: 8px; }
+#hint b { color: #ffd24a; }
+kbd { display: inline-block; background: #20283a; border: 1px solid #3a4660; border-radius: 5px; padding: 1px 6px; font-size: 11px; box-shadow: 0 1px 0 #11151f; }
+
+/* araç üstü isim etiketleri (CSS2D) */
+.car-label {
+  color: #fff; font-size: 12.5px; font-weight: 700; padding: 2px 8px; border-radius: 8px;
+  background: rgba(10,14,22,.7); border: 1px solid rgba(255,255,255,.2); white-space: nowrap;
+  text-shadow: 0 1px 3px #000; transform: translateY(-6px);
+}
+.car-label.me { background: rgba(30,80,200,.8); }

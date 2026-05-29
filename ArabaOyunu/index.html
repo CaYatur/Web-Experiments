@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Açık Dünya Araba Sürme — DualSense + Çok Oyunculu</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <!-- BAŞLANGIÇ EKRANI -->
+  <div id="start">
+    <div class="start-card">
+      <h1>🏎️ AÇIK DÜNYA SÜRÜŞ</h1>
+      <p class="sub">DualSense • Adaptive Trigger • Drift • Boost • Çok Oyunculu</p>
+
+      <label>Adın</label>
+      <input id="name-input" maxlength="14" placeholder="Sürücü adın" />
+
+      <label>Araç</label>
+      <div id="model-list" class="row"></div>
+
+      <label>Renk</label>
+      <div id="color-list" class="row"></div>
+
+      <label>Çok oyunculu sunucu (isteğe bağlı)</label>
+      <input id="server-input" placeholder="ws://localhost:8090" value="ws://localhost:8090" />
+      <div class="hintline">Boş bırakırsan tek oyunculu başlar. Arkadaşların için: aynı ağdaki IP'yi yaz (ör. ws://192.168.1.20:8090).</div>
+
+      <div class="row btns">
+        <button id="play-solo">Tek Oyunculu Başla</button>
+        <button id="play-multi" class="primary">Çok Oyunculu Başla</button>
+      </div>
+      <div id="start-status"></div>
+    </div>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="banner"></div>
+    <canvas id="minimap" width="170" height="170"></canvas>
+    <div id="fps-box">FPS <span id="fps">0</span> · Oyuncular <span id="pcount">1</span> · Puan <span id="score">0</span></div>
+
+    <div id="speedo">
+      <div class="big"><span id="speed">0</span><small>km/s</small></div>
+      <div class="gear">Vites <span id="gear">1</span></div>
+    </div>
+
+    <div id="bars">
+      <div class="bar"><span class="lbl">BOOST</span><div class="track"><div id="boost-fill" class="fill boost"></div></div></div>
+      <div class="bar"><span class="lbl">HASAR</span><div class="track"><div id="health-fill" class="fill health"></div></div></div>
+    </div>
+  </div>
+
+  <!-- DualSense + kontroller paneli -->
+  <div id="panel">
+    <button id="connect-ds">DualSense bağla</button>
+    <div id="ds-status">USB ile bağlamanız önerilir.</div>
+    <div id="hint">
+      <b>Kontroller</b><br />
+      Gaz <kbd>W</kbd>/<kbd>R2</kbd> · Fren+Geri <kbd>S</kbd>/<kbd>L2</kbd> · Direksiyon <kbd>A</kbd><kbd>D</kbd>/Sol analog<br />
+      Boost <kbd>Boşluk</kbd>/<kbd>◯</kbd> · Drift <kbd>Shift</kbd>/<kbd>☐</kbd> · Sıfırla <kbd>R</kbd>/<kbd>△</kbd><br />
+      Korna <kbd>H</kbd>/<kbd>L1</kbd> · Kamera <kbd>C</kbd>/<kbd>R1</kbd> · Bakış Sağ analog · <b>Paraları topla!</b>
+    </div>
+  </div>
+
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>
