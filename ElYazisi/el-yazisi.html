@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Yazısı Sistemi</title>
+
+  <!--
+    NOT: Sisteme CaYa-Font klasörden yüklenmeye çalışılacak.
+    Eğer caya-font.woff2 / caya-font.ttf dosyanız varsa "fonts/" klasörüne koyun.
+    Yoksa Caveat (Google Fonts) otomatik yedek olarak kullanılır.
+  -->
+  <style>
+    @font-face {
+      font-family: 'CaYa';
+      src: url('fonts/caya-font.woff2') format('woff2'),
+           url('fonts/caya-font.ttf')   format('truetype');
+      font-weight: 400 700;
+      font-style: normal;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & base ────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --font-hw: 'CaYa', 'Caveat', cursive;
+      --paper: #ffffff;
+      --paper-line: rgba(130, 160, 220, 0.22);
+      --paper-margin: rgba(220, 80, 80, 0.30);
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: #d6d6d6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 36px 16px 60px;
+      font-family: var(--font-hw);
+    }
+
+    /* ── Control Panel ───────────────────────────────────────── */
+    .panel {
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(8px);
+      border-radius: 10px;
+      padding: 18px 22px;
+      width: 100%;
+      max-width: 720px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: flex-end;
+    }
+
+    .panel h2 {
+      width: 100%;
+      font-family: var(--font-hw);
+      font-size: 22px;
+      color: #2c3e6a;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding-bottom: 8px;
+      margin-bottom: 2px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1 1 140px;
+    }
+    .field label {
+      font-family: system-ui, sans-serif;
+      font-size: 11px;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 110px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 8px;
+      font-family: var(--font-hw);
+      font-size: 16px;
+      color: #1a3a6b;
+      background: #f8f6f0;
+      flex: 1 1 100%;
+    }
+    .field select,
+    .field input[type=range],
+    .field input[type=number] {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 14px;
+      background: #f8f6f0;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ctrl-row input[type=range] { flex: 1; }
+    .ctrl-row span {
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      color: #666;
+      min-width: 30px;
+    }
+
+    .btn {
+      padding: 9px 22px;
+      border: none;
+      border-radius: 7px;
+      font-family: var(--font-hw);
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: #1a3a6b;
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(26,58,107,0.4);
+    }
+    .btn-secondary {
+      background: #eee;
+      color: #333;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+
+    /* ── Paper – A4 proportion ─────────────────────────────── */
+    .paper-wrap {
+      width: 100%;
+      max-width: 794px;   /* A4 at 96dpi = 794px */
+    }
+
+    .paper {
+      background: var(--paper);
+      width: 794px;
+      max-width: 100%;
+      min-height: 1123px; /* A4 height at 96dpi */
+      padding: 72px 72px 72px 96px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 2px 4px  rgba(0,0,0,0.12),
+        0 6px 14px rgba(0,0,0,0.14),
+        0 22px 52px rgba(0,0,0,0.20);
+      border-radius: 1px;
+    }
+
+    /* Horizontal lines */
+    .paper::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        transparent 0px, transparent 36px,
+        var(--paper-line) 36px, var(--paper-line) 37px
+      );
+      pointer-events: none; z-index: 0;
+    }
+
+    /* Red margin line */
+    .paper::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 80px; bottom: 0;
+      width: 1.5px;
+      background: var(--paper-margin);
+      pointer-events: none; z-index: 0;
+    }
+
+    .writing-area {
+      position: relative; z-index: 1;
+    }
+
+    /* ── SVG filters ─────────────────────────────────────────── */
+    svg.ink-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+  </style>
+</head>
+<body>
+
+<!-- ── SVG ink filter definitions ────────────────────────────── -->
+<svg class="ink-defs">
+  <defs>
+    <!--
+      ink-pen: Tükenmez kalem efekti.
+      Çok hafif displacement (scale=0.6) + micro-blur (0.10)
+      Kenar düzensizliği gerçekçi ama abartısız.
+    -->
+    <filter id="ink-pen" x="-3%" y="-6%" width="106%" height="118%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="1.6 1.1"
+                    numOctaves="3" seed="11" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise"
+                         scale="0.6" xChannelSelector="R" yChannelSelector="G"
+                         result="displaced"/>
+      <feGaussianBlur in="displaced" stdDeviation="0.10" result="soft"/>
+      <feComposite in="soft" in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- ink-start: Kalem başlangıcında biraz daha koyu/geniş nokta -->
+    <filter id="ink-start" x="-8%" y="-12%" width="116%" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="blur"/>
+      <feFlood flood-color="rgb(14,38,85)" flood-opacity="0.22" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="dot"/>
+      <feMerge>
+        <feMergeNode in="dot"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- ink-blob: Fazla mürekkep birikimi — nadir kullanılır (~%4) -->
+    <filter id="ink-blob" x="-18%" y="-20%" width="136%" height="148%" color-interpolation-filters="sRGB">
+      <!-- Karakterin alfa kanalından kabarma yay -->
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.8" result="bigBlur"/>
+      <!-- Mürekkep birikme rengi: ana renkten biraz koyu -->
+      <feFlood flood-color="rgb(10,32,80)" flood-opacity="0.55" result="inkColor"/>
+      <feComposite in="inkColor" in2="bigBlur" operator="in" result="blob"/>
+      <!-- Blob üzerine orijinal karakteri yaz -->
+      <feMerge>
+        <feMergeNode in="blob"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ── Control Panel ──────────────────────────────────────────── -->
+<div class="panel">
+  <h2>✍ El Yazısı Sistemi</h2>
+
+  <div class="field" style="flex: 1 1 100%;">
+    <label>Metin</label>
+    <textarea id="inputText" rows="7">Kaşağı Hikayesi
+
+Ahırda kaşağı parıldadı gümüş gibi,
+Ömer ile Hasan oynardı her akşam.
+Kınlı dişleri sert bir taşa çarptı,
+Korkuyla Ömer suçu kardeşine attı.
+
+Baba öfkeyle Hasan'ı dövdü o gece,
+Yalan küçük bir tohumu, hızla büyüdü.
+Hasan yatağı döktü, boğazı daraldı,
+Difteri sardı masum bedenini.
+
+Ömer kapıda sessizce oğlul,
+Vicdan arabaya yanıyordu içi.
+"Kardeşimi" diye attı boşuna,</textarea>
+  </div>
+
+  <div class="field">
+    <label>Mürekkep Rengi</label>
+    <select id="inkColor">
+      <option value="blue" selected>Mavi (Tükenmez)</option>
+      <option value="black">Siyah (Tükenmez)</option>
+      <option value="sepia">Sepya (Eski Kalem)</option>
+      <option value="navy">Lacivert</option>
+      <option value="custom">✨ Özel Renk</option>
+    </select>
+  </div>
+
+  <div class="field" id="customColorField" style="display:none;">
+    <label>Renk Seç (Ana Ton)</label>
+    <div class="ctrl-row">
+      <input type="color" id="customColor" value="#1e4fa8"
+             style="width:44px;height:34px;border:1px solid #ccc;border-radius:6px;padding:2px;cursor:pointer;background:#f8f6f0;" />
+      <span id="customColorHex" style="font-family:monospace;font-size:12px;color:#444;">#1e4fa8</span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Ton Varyasyonu</label>
+    <div class="ctrl-row">
+      <input type="range" id="toneSpread" min="0" max="40" value="10" step="1" />
+      <span id="toneSpreadVal">10</span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Hizalama</label>
+    <select id="textAlign">
+      <option value="left" selected>Sol</option>
+      <option value="center">Orta</option>
+      <option value="right">Sağ</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Karakter Boyutu</label>
+    <div class="ctrl-row">
+      <input type="range" id="fontSize" min="14" max="32" value="20" />
+      <span id="fontSizeVal">20</span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Kontur Kalınlığı</label>
+    <div class="ctrl-row">
+      <input type="range" id="strokeWidth" min="0" max="100" value="0" step="1" />
+      <span id="strokeWidthVal">0</span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Titreme Şiddeti</label>
+    <div class="ctrl-row">
+      <input type="range" id="jitter" min="0" max="100" value="20" />
+      <span id="jitterVal">20</span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Satir Araliği</label>
+    <div class="ctrl-row">
+      <input type="range" id="lineSpacing" min="100" max="300" value="182" step="1" />
+      <span id="lineSpacingVal">182</span>%
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Rastgele Tohum</label>
+    <div class="ctrl-row">
+      <input type="number" id="seed" value="2024" min="1" max="99999" style="width:90px;" />
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-left:auto;">
+    <button class="btn btn-secondary" id="btnRandom">🎲 Değiştir</button>
+    <button class="btn btn-primary"   id="btnRender">Yaz →</button>
+    <button class="btn btn-secondary" id="btnPrint">🖨 Yazdır</button>
+  </div>
+</div>
+
+<!-- ── Paper Output ────────────────────────────────────────────── -->
+<div class="paper-wrap">
+  <div class="paper" id="paper">
+    <div class="writing-area" id="writing"></div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   El Yazısı Sistemi – Core Engine
+   ══════════════════════════════════════════════════════════════ */
+
+// ── Mulberry32 seeded PRNG ───────────────────────────────────────
+function mkRng(seed) {
+  let s = seed | 0;
+  return function () {
+    s = (s + 0x6D2B79F5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function rangeOf(rng, lo, hi) { return lo + rng() * (hi - lo); }
+function pickFrom(rng, arr)    { return arr[Math.floor(rng() * arr.length)]; }
+
+// ── Ink palette presets ──────────────────────────────────────────
+const PALETTES = {
+  blue: [
+    // #1e4fa8 bazlı tükenmez mavi tonlar
+    [30, 79, 168],   // #1e4fa8 — ana renk
+    [26, 72, 158],   // biraz koyu
+    [34, 86, 178],   // biraz açık
+    [28, 76, 162],   // hafif koyu
+    [32, 82, 172],   // hafif açık
+    [24, 68, 152],   // derin mavi
+    [36, 90, 182],   // canlı açık
+    [29, 80, 165],   // ana yakın
+    [27, 74, 160],   // soğuk ton
+    [33, 84, 175],   // ılık ton
+  ],
+  black: [
+    [28, 28, 32], [22, 22, 26], [34, 32, 36],
+    [18, 18, 22], [30, 29, 33], [26, 26, 30],
+  ],
+  sepia: [
+    [95, 65, 30], [88, 58, 24], [102, 70, 35],
+    [80, 52, 20], [98, 68, 32], [85, 60, 26],
+  ],
+  navy: [
+    [14, 28, 72], [18, 34, 80], [10, 22, 60],
+    [22, 40, 88], [16, 30, 76], [12, 25, 66],
+  ],
+};
+
+function inkColor(rng, palette, spread) {
+  // Her harf farklı bir palet tonundan seçilir
+  const [r, g, b] = pickFrom(rng, palette);
+  // Ton varyasyon aralığı spread parametresiyle kontrol edilir (0=sabit, 40=geniş)
+  const d = Math.round(spread / 2);
+  const dr = Math.round(rangeOf(rng, -d, d));
+  const dg = Math.round(rangeOf(rng, -d, d));
+  const db = Math.round(rangeOf(rng, -d, d + 2));
+  return `rgb(${Math.max(0,Math.min(255,r+dr))},${Math.max(0,Math.min(255,g+dg))},${Math.max(0,Math.min(255,b+db))})`;
+}
+
+// Hex rengi RGB dizisine çevirir
+function hexToRgb(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const n = parseInt(hex, 16);
+  return [(n>>16)&255, (n>>8)&255, n&255];
+}
+
+// Özel renkten 10-ton palet üretir
+function buildCustomPalette(hex, spread) {
+  const [r, g, b] = hexToRgb(hex);
+  const s = Math.max(4, spread);  // en az biraz fark olsun
+  const tones = [];
+  for (let i = 0; i < 10; i++) {
+    const t = (i - 4.5) / 4.5;   // -1 → +1 arası dağılım
+    tones.push([
+      Math.max(0, Math.min(255, Math.round(r + t * s * 0.6))),
+      Math.max(0, Math.min(255, Math.round(g + t * s * 0.5))),
+      Math.max(0, Math.min(255, Math.round(b + t * s * 0.7))),
+    ]);
+  }
+  return tones;
+}
+
+// ── Build a single character <span> ─────────────────────────────
+function makeChar(ch, rng, palette, baseFontSize, jitterScale, strokePx, toneSpread) {
+  const span = document.createElement('span');
+  span.textContent = ch;
+  span.style.display = 'inline-block';
+
+  const j = jitterScale;  // 0→1
+
+  // ── Geometri: tükenmez kalem gibi tutarlı, çok az sallanma ──
+  const rot   = rangeOf(rng, -1.2 * j, 1.2 * j);   // max ±1.2°
+  const ty    = rangeOf(rng, -1.0 * j, 1.4 * j);   // hafif alt-üst
+  const scale = rangeOf(rng, 1 - 0.02 * j, 1 + 0.02 * j); // ±2%
+  span.style.transform = `rotate(${rot}deg) translateY(${ty}px) scale(${scale})`;
+  span.style.transformOrigin = 'center 85%';
+
+  // ── Renk: ton varyasyonu spread parametresiyle ──
+  span.style.color = inkColor(rng, palette, toneSpread || 8);
+
+  // ── Boyut: çok küçük varyasyon ──
+  const fs = baseFontSize * rangeOf(rng, 0.97, 1.03);
+  span.style.fontSize = fs + 'px';
+
+  // ── Ağırlık: tükenmez = genel olarak sabit, nadir varyasyon ──
+  const p = rng();
+  span.style.fontWeight = p > 0.85 ? '600' : '500';
+
+  // ── Harf aralığı: minimal ──
+  span.style.letterSpacing = rangeOf(rng, -0.4, 0.4) + 'px';
+
+  // ── Tükenmez mürekkep gölgesi (harfin kendi rengiyle uyumlu) ──
+  const charColor = span.style.color.match(/\d+/g).map(Number);
+  const [pr, pg, pb] = charColor.length === 3 ? charColor : palette[0];
+  const op = rangeOf(rng, 0.08, 0.18);   // tutarlı, dar aralık
+  const bx = rangeOf(rng, -0.3, 0.3);
+  span.style.textShadow = [
+    `${bx}px 0.5px 0.8px rgba(${pr},${pg},${pb},${op})`,
+    `0px 0.2px 0.3px rgba(${pr},${pg},${pb},${op * 0.5})`,
+  ].join(', ');
+
+  // ── SVG filtre seçimi ──
+  // %4  → ink-blob (fazla mürekkep birikimi, nadir)
+  // %12 → ink-start (kalem başı koyu nokta)
+  // geri kalanı → ink-pen (normal)
+  const filterRoll = rng();
+  span.style.filter = filterRoll > 0.96 ? 'url(#ink-blob)'
+                    : filterRoll > 0.84 ? 'url(#ink-start)'
+                    : 'url(#ink-pen)';
+
+  // ── Harf içi çift renk (nadir ~%5) ──
+  // background-clip:text ile gradient — tek renk baskaleşir
+  if (rng() > 0.95) {
+    const [r2, g2, b2] = pickFrom(rng, palette);
+    const shift = Math.round(rangeOf(rng, 12, 26));
+    const angle = Math.round(rangeOf(rng, 70, 130));
+    span.style.backgroundImage =
+      `linear-gradient(${angle}deg, ${span.style.color} 30%, rgb(${Math.max(0,r2-shift)},${Math.max(0,g2-shift)},${Math.min(255,b2+shift)}) 100%)`;
+    span.style.webkitBackgroundClip = 'text';
+    span.style.backgroundClip = 'text';
+    span.style.webkitTextFillColor = 'transparent';
+    // Kontur varsa fill transparent yerine rengi koru
+    if (strokePx > 0) span.style.webkitTextFillColor = '';
+  }
+
+  // ── Kontur ──
+  if (strokePx > 0) {
+    // -webkit-text-stroke rengi harfin kendi rengi, ışık varıyor
+    const strokeOp = rangeOf(rng, 0.70, 1.0);
+    const charCol = span.style.color.match(/\d+/g).map(Number);
+    const [sr, sg, sb] = charCol.length === 3 ? charCol : palette[0];
+    span.style.webkitTextStroke = `${strokePx}px rgba(${sr},${sg},${sb},${strokeOp})`;
+    span.style.paintOrder = 'stroke fill';
+  }
+
+  return span;
+}
+
+// ── Render full text ─────────────────────────────────────────────
+function render() {
+  const rawText      = document.getElementById('inputText').value;
+  const inkKey       = document.getElementById('inkColor').value;
+  const baseFontSize = parseInt(document.getElementById('fontSize').value, 10);
+  const jitter       = parseInt(document.getElementById('jitter').value, 10) / 100;
+  const seed         = parseInt(document.getElementById('seed').value, 10) || 2024;
+  const align        = document.getElementById('textAlign').value;
+  const strokePx     = parseInt(document.getElementById('strokeWidth').value, 10) / 20;
+  const lineSpacingMult = parseInt(document.getElementById('lineSpacing').value, 10) / 100;
+  const toneSpread   = parseInt(document.getElementById('toneSpread').value, 10);
+
+  let palette;
+  if (inkKey === 'custom') {
+    const hex = document.getElementById('customColor').value;
+    palette = buildCustomPalette(hex, toneSpread);
+  } else {
+    palette = PALETTES[inkKey] || PALETTES.blue;
+  }
+  const rng       = mkRng(seed);
+  const container = document.getElementById('writing');
+  container.innerHTML = '';
+
+  const lines = rawText.split('\n');
+
+  lines.forEach((line) => {
+    // Boş satır → küçük boşluk
+    if (line.trim() === '') {
+      const spacer = document.createElement('div');
+      spacer.style.height = rangeOf(rng, 10, 18) + 'px';
+      container.appendChild(spacer);
+      return;
+    }
+
+    const lineDiv = document.createElement('div');
+    lineDiv.style.display      = 'block';
+    lineDiv.style.whiteSpace   = 'normal';
+    lineDiv.style.wordBreak    = 'normal';
+    lineDiv.style.overflowWrap = 'break-word';
+    lineDiv.style.textAlign    = align;
+
+    // Satır hizası: sol kenardan hafif rastgele kayma (tükenmez kalem gibi)
+    const lx      = align === 'left'  ? rangeOf(rng, 0, 6) : 0;
+    const mt      = rangeOf(rng, 2, 6);
+    const lh      = (baseFontSize * lineSpacingMult) + rangeOf(rng, -1, 2);
+    const lineRot = rangeOf(rng, -0.20, 0.20);  // çok hafif eğim
+
+    lineDiv.style.marginLeft      = lx + 'px';
+    lineDiv.style.marginTop       = mt + 'px';
+    lineDiv.style.lineHeight      = lh + 'px';
+    lineDiv.style.transform       = `rotate(${lineRot}deg)`;
+    lineDiv.style.transformOrigin = 'left center';
+
+    // Kelime kelime render: kelime içi kırılma yok
+    const words = line.split(' ');
+    words.forEach((word, wi) => {
+      if (wi > 0) {
+        // Kelime arası boşluk: tükenmez kalemde sabit ama minik varyasyon
+        const sp = document.createElement('span');
+        sp.innerHTML = '\u00A0';
+        sp.style.cssText = `display:inline-block;width:${rangeOf(rng, baseFontSize*0.28, baseFontSize*0.36)}px;`;
+        lineDiv.appendChild(sp);
+      }
+      if (word.length === 0) return;
+      const wordSpan = document.createElement('span');
+      wordSpan.style.cssText = 'display:inline-block;white-space:nowrap;vertical-align:baseline;';
+      [...word].forEach(ch => wordSpan.appendChild(makeChar(ch, rng, palette, baseFontSize, jitter, strokePx, toneSpread)));
+      lineDiv.appendChild(wordSpan);
+    });
+
+    container.appendChild(lineDiv);
+  });
+}
+
+// ── Event wiring ─────────────────────────────────────────────────
+document.getElementById('btnRender').addEventListener('click', render);
+document.getElementById('textAlign').addEventListener('change', render);
+document.getElementById('inkColor').addEventListener('change', function() {
+  document.getElementById('customColorField').style.display =
+    this.value === 'custom' ? 'flex' : 'none';
+  render();
+});
+document.getElementById('customColor').addEventListener('input', function () {
+  document.getElementById('customColorHex').textContent = this.value;
+  render();
+});
+document.getElementById('toneSpread').addEventListener('input', function () {
+  document.getElementById('toneSpreadVal').textContent = this.value;
+  render();
+});
+
+document.getElementById('btnRandom').addEventListener('click', () => {
+  document.getElementById('seed').value = Math.floor(Math.random() * 90000) + 1000;
+  render();
+});
+
+document.getElementById('btnPrint').addEventListener('click', () => {
+  window.print();
+});
+
+// Live slider labels
+document.getElementById('fontSize').addEventListener('input', function () {
+  document.getElementById('fontSizeVal').textContent = this.value;
+  render();
+});
+document.getElementById('strokeWidth').addEventListener('input', function () {
+  document.getElementById('strokeWidthVal').textContent = this.value;
+  render();
+});
+document.getElementById('lineSpacing').addEventListener('input', function () {
+  document.getElementById('lineSpacingVal').textContent = this.value;
+  render();
+});
+document.getElementById('jitter').addEventListener('input', function () {
+  document.getElementById('jitterVal').textContent = this.value;
+  render();
+});
+document.getElementById('inputText').addEventListener('input', render);
+document.getElementById('seed').addEventListener('change', render);
+
+// Auto-render on load
+window.addEventListener('load', render);
+</script>
+
+<style>
+  /* ── Print – tam A4, kenarsız ───────────────────────────── */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  @media print {
+    html, body { margin: 0; padding: 0; background: none; }
+    .panel { display: none !important; }
+    .paper-wrap {
+      width: 210mm;
+      max-width: 210mm;
+      margin: 0;
+      box-shadow: none;
+    }
+    .paper {
+      width: 210mm;
+      min-height: 297mm;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 18mm 18mm 18mm 22mm;
+    }
+  }
+</style>
+</body>
+</html>
