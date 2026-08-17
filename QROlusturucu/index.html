@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Kod Oluşturucu</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔳 QR Kod Oluşturucu</h1>
+            <p>Toplu QR kod oluşturun, logo ekleyin ve özelleştirin</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="single">Tekli QR</button>
+            <button class="tab-btn" data-tab="bulk">Toplu QR</button>
+        </div>
+
+        <div class="main-content">
+            <!-- Tekli QR Oluşturma -->
+            <div id="single" class="tab-content active">
+                <div class="form-section">
+                    <div class="input-group">
+                        <label for="qrType">QR Tipi</label>
+                        <select id="qrType">
+                            <option value="text">Metin / URL</option>
+                            <option value="wifi">WiFi</option>
+                            <option value="vcard">Kartvizit (vCard)</option>
+                            <option value="email">E-posta</option>
+                            <option value="phone">Telefon</option>
+                            <option value="sms">SMS</option>
+                        </select>
+                    </div>
+
+                    <!-- Metin/URL -->
+                    <div id="textInput" class="type-input active">
+                        <div class="input-group">
+                            <label for="qrText">Metin veya URL</label>
+                            <textarea id="qrText" rows="3" placeholder="QR koda eklenecek metin veya URL..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- WiFi -->
+                    <div id="wifiInput" class="type-input">
+                        <div class="input-group">
+                            <label for="wifiSSID">Ağ Adı (SSID)</label>
+                            <input type="text" id="wifiSSID" placeholder="WiFi ağ adı">
+                        </div>
+                        <div class="input-group">
+                            <label for="wifiPassword">Şifre</label>
+                            <input type="text" id="wifiPassword" placeholder="WiFi şifresi">
+                        </div>
+                        <div class="input-group">
+                            <label for="wifiType">Güvenlik Tipi</label>
+                            <select id="wifiType">
+                                <option value="WPA">WPA/WPA2</option>
+                                <option value="WEP">WEP</option>
+                                <option value="nopass">Şifresiz</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- vCard -->
+                    <div id="vcardInput" class="type-input">
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="vcardName">Ad Soyad</label>
+                                <input type="text" id="vcardName" placeholder="Ad Soyad">
+                            </div>
+                            <div class="input-group">
+                                <label for="vcardOrg">Şirket</label>
+                                <input type="text" id="vcardOrg" placeholder="Şirket adı">
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="vcardPhone">Telefon</label>
+                                <input type="tel" id="vcardPhone" placeholder="+90 5XX XXX XX XX">
+                            </div>
+                            <div class="input-group">
+                                <label for="vcardEmail">E-posta</label>
+                                <input type="email" id="vcardEmail" placeholder="email@ornek.com">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="vcardUrl">Web Sitesi</label>
+                            <input type="url" id="vcardUrl" placeholder="https://example.com">
+                        </div>
+                        <div class="input-group">
+                            <label for="vcardAddress">Adres</label>
+                            <textarea id="vcardAddress" rows="2" placeholder="Adres bilgisi"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- E-posta -->
+                    <div id="emailInput" class="type-input">
+                        <div class="input-group">
+                            <label for="emailTo">E-posta Adresi</label>
+                            <input type="email" id="emailTo" placeholder="email@ornek.com">
+                        </div>
+                        <div class="input-group">
+                            <label for="emailSubject">Konu</label>
+                            <input type="text" id="emailSubject" placeholder="E-posta konusu">
+                        </div>
+                        <div class="input-group">
+                            <label for="emailBody">Mesaj</label>
+                            <textarea id="emailBody" rows="3" placeholder="E-posta içeriği"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Telefon -->
+                    <div id="phoneInput" class="type-input">
+                        <div class="input-group">
+                            <label for="phoneNumber">Telefon Numarası</label>
+                            <input type="tel" id="phoneNumber" placeholder="+90 5XX XXX XX XX">
+                        </div>
+                    </div>
+
+                    <!-- SMS -->
+                    <div id="smsInput" class="type-input">
+                        <div class="input-group">
+                            <label for="smsNumber">Telefon Numarası</label>
+                            <input type="tel" id="smsNumber" placeholder="+90 5XX XXX XX XX">
+                        </div>
+                        <div class="input-group">
+                            <label for="smsBody">Mesaj</label>
+                            <textarea id="smsBody" rows="3" placeholder="SMS içeriği"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="generateSingle" class="btn-primary">QR Kod Oluştur</button>
+            </div>
+
+            <!-- Toplu QR Oluşturma -->
+            <div id="bulk" class="tab-content">
+                <div class="form-section">
+                    <!-- Şablon İndirme Alanı -->
+                    <div class="template-box">
+                        <div class="template-header">
+                            <span class="template-title">📋 Excel / Tablo Formatı Şablonları</span>
+                            <span class="template-subtitle">Toplu içe aktarma için hazır şablon indirin</span>
+                        </div>
+                        <div class="template-buttons">
+                            <button type="button" id="downloadExcelTemplate" class="btn-template">
+                                📊 Örnek Excel Şablonu (.xlsx)
+                            </button>
+                            <button type="button" id="downloadCsvTemplate" class="btn-template">
+                                📄 Örnek CSV Şablonu (.csv)
+                            </button>
+                        </div>
+                        <div class="template-guide">
+                            <span class="guide-item"><strong>1. Sütun (Zorunlu):</strong> QR Metni / URL</span>
+                            <span class="guide-divider">•</span>
+                            <span class="guide-item"><strong>2. Sütun (Opsiyonel):</strong> İndirilecek Dosya Adı</span>
+                        </div>
+                    </div>
+
+                    <!-- Dosya Yükleme Alanı -->
+                    <div class="file-upload-box" id="dropZone">
+                        <div class="upload-icon">📁</div>
+                        <label for="excelFile" class="upload-label">
+                            <strong>Excel veya CSV/TXT Dosyası Seçin</strong> ya da buraya sürükleyin
+                        </label>
+                        <input type="file" id="excelFile" accept=".xlsx,.xls,.csv,.txt">
+                        <small class="upload-hint">Desteklenen formatlar: .xlsx, .xls, .csv, .txt</small>
+                        <div id="fileLoadedInfo" class="file-loaded-info" style="display: none;">
+                            <span id="fileNameDisplay" class="file-name"></span>
+                            <button type="button" id="clearFileBtn" class="btn-clear-file" title="Dosyayı kaldır">✕</button>
+                        </div>
+                    </div>
+
+                    <!-- Manuel Metin Girişi -->
+                    <div class="input-group" style="margin-top: 20px;">
+                        <div class="label-with-hint">
+                            <label for="bulkText">Veya Metin Olarak Yapıştırın (Her satır bir QR kod)</label>
+                            <span class="hint-tag">Format: Metin | Dosya Adı</span>
+                        </div>
+                        <textarea id="bulkText" rows="6" placeholder="Örnek kullanım:
+https://example1.com | ornek_link_1
+https://example2.com | ornek_link_2
+Masa 5 Menü | masa_5
+Yalnızca QR Metni (Otomatik adlandırılır)"></textarea>
+                    </div>
+
+                    <div id="bulkStatsInfo" class="bulk-stats-info" style="display: none;"></div>
+                </div>
+                <button id="generateBulk" class="btn-primary">Toplu QR Oluştur</button>
+            </div>
+
+            <!-- Özelleştirme Paneli -->
+            <div class="customization-panel">
+                <h3>⚙️ Özelleştirme</h3>
+                
+                <div class="input-group">
+                    <label for="qrSize">Boyut: <span id="sizeValue">512</span>px</label>
+                    <input type="range" id="qrSize" min="128" max="2048" value="512" step="64">
+                </div>
+
+                <div class="input-group">
+                    <label for="errorCorrection">Hata Düzeltme Seviyesi</label>
+                    <select id="errorCorrection">
+                        <option value="L">Düşük (L) - %7</option>
+                        <option value="M" selected>Orta (M) - %15</option>
+                        <option value="Q">Yüksek (Q) - %25</option>
+                        <option value="H">En Yüksek (H) - %30</option>
+                    </select>
+                </div>
+
+                <div class="color-inputs">
+                    <div class="input-group">
+                        <label for="fgColor">Ön Plan Rengi</label>
+                        <input type="color" id="fgColor" value="#000000">
+                    </div>
+                    <div class="input-group">
+                        <label for="bgColor">Arka Plan Rengi</label>
+                        <input type="color" id="bgColor" value="#ffffff">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="logoUpload">Logo Ekle</label>
+                    <input type="file" id="logoUpload" accept="image/*">
+                    <small>Logo eklemek için yüksek hata düzeltme seviyesi önerilir</small>
+                </div>
+
+                <!-- Logo Önizleme -->
+                <div id="logoPreviewContainer" class="logo-preview-container" style="display: none;">
+                    <label>Logo Önizleme</label>
+                    <div class="logo-preview-wrapper">
+                        <img id="logoPreviewImg" src="" alt="Logo önizleme">
+                    </div>
+                </div>
+
+                <div class="input-group" id="logoSizeGroup" style="display: none;">
+                    <label for="logoSize">Logo Boyutu: <span id="logoSizeValue">20</span>%</label>
+                    <input type="range" id="logoSize" min="10" max="30" value="20">
+                </div>
+
+                <div class="input-group" id="logoBgGroup" style="display: none;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="logoBgEnabled">
+                        <span>Logo Arka Planı</span>
+                    </label>
+                    <div id="logoBgColorGroup" class="logo-bg-options" style="display: none;">
+                        <input type="color" id="logoBgColor" value="#ffffff">
+                        <label for="logoBgPadding">Dolgu: <span id="logoBgPaddingValue">10</span>%</label>
+                        <input type="range" id="logoBgPadding" min="0" max="30" value="10">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="logoBgRounded">
+                            <span>Yuvarlak Köşe</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button id="removeLogo" class="btn-secondary" style="display: none;">Logo Kaldır</button>
+            </div>
+        </div>
+
+        <!-- QR Kod Önizleme -->
+        <div class="preview-section" id="previewSection" style="display: none;">
+            <h3>📱 Önizleme</h3>
+            <div id="qrPreview" class="qr-preview"></div>
+            <div class="download-buttons">
+                <button id="downloadPNG" class="btn-download">PNG İndir</button>
+                <button id="downloadSVG" class="btn-download">SVG İndir</button>
+            </div>
+        </div>
+
+        <!-- Toplu QR Sonuçları -->
+        <div class="bulk-results" id="bulkResults" style="display: none;">
+            <div class="bulk-header">
+                <h3>📦 Toplu QR Kodları (<span id="bulkCount">0</span> adet)</h3>
+                <button id="downloadAllZip" class="btn-primary">Tümünü ZIP İndir</button>
+            </div>
+            <div id="bulkQRContainer" class="bulk-qr-container"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
