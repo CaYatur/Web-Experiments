@@ -22,4 +22,4 @@
 
 ---
 
-Çağan Turgut · [caganturgut.com](https://caganturgut.com) · [GitHub](https://github.com/CaYatur)
+Çağan Turgut · [GitHub](https://github.com/CaYatur)
